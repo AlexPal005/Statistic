@@ -1,6 +1,28 @@
 {
-  "name": "Statistic",
+  "type": "module",
+  "name": "statistic",
   "version": "1.0.0",
+  "scripts": {
+    "start": "node server.js",
+    "server": "nodemon server.js"
+  },
+  "description": "statistic project",
+  "main": "server.js",
+  "keywords": [
+    "react",
+    "node",
+    "statistic"
+  ],
+  "author": "AlexPAl005",
+  "license": "ISC",
   "dependencies": {
+    "config": "^3.3.9",
+    "express": "^4.18.2",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.0.1"
+  },
+  "devDependencies": {
+    "concurrently": "^7.6.0",
+    "nodemon": "^2.0.20"
   }
 }
