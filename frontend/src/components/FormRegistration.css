@@ -1,0 +1,62 @@
+.form-registration{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding-top: 7%;
+}
+.form-registration input:not(input[type="checkbox"]){
+    width: 350px;
+    height: 35px;
+    padding-left: 20px;
+    border-radius: 20px;
+    border: 1px solid var(--grey)
+}
+.form-registration input::placeholder{
+    font-size: 16px;
+}
+.form-registration p,
+.form-registration input[type="checkbox"]{
+    font-size: 20px;
+    margin-top: 10px;
+    font-weight: 500;
+}
+.form-registration p{
+    margin-bottom: 5px;
+}
+.form-registration input[type="checkbox"]{
+    margin-right: 10px;
+}
+.form-registration label{
+    font-size: 16px;
+}
+.form-registration button{
+    width: 160px;
+    height: 40px;
+    border-radius: 20px;
+    border: none;
+    background-color: green;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--white);
+    margin-top: 25px;
+
+}
+.form-registration button:hover{
+    background-color: var(--main-grey-hover);
+    cursor: pointer;
+}
+
+@media screen and (max-width: 768px){
+    .form-registration input:not(input[type="checkbox"]) {
+        width: 280px;
+        height: 30px;
+    }
+    .form-registration p,
+    .form-registration input[type="checkbox"] {
+        font-size: 16px;
+    }
+    .form-registration input::placeholder{
+        font-size: 14px;
+    }
+}
