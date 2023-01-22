@@ -1,36 +1,51 @@
-.form-registration{
+.form-registration {
     width: 100%;
     display: flex;
     align-items: center;
     flex-direction: column;
     padding-top: 7%;
 }
-.form-registration input:not(input[type="checkbox"]){
+
+.form-registration input:not(input[type="checkbox"]) {
     width: 350px;
     height: 35px;
     padding-left: 20px;
     border-radius: 20px;
-    border: 1px solid var(--grey)
+    border: 1px solid var(--grey);
+    transition: 0.5s;
+    box-shadow: 0 0 4px -2px rgba(0,0,0,0.5) inset;
 }
-.form-registration input::placeholder{
+
+.form-registration input:not(input[type="checkbox"]):focus {
+    box-shadow: 0 0 10px -2px var(--main-blue);
+    border: 1px solid var(--main-blue);
+    outline: none;
+}
+
+.form-registration input::placeholder {
     font-size: 16px;
 }
+
 .form-registration p,
-.form-registration input[type="checkbox"]{
+.form-registration input[type="checkbox"] {
     font-size: 20px;
     margin-top: 10px;
     font-weight: 500;
 }
-.form-registration p{
+
+.form-registration p {
     margin-bottom: 5px;
 }
-.form-registration input[type="checkbox"]{
+
+.form-registration input[type="checkbox"] {
     margin-right: 10px;
 }
-.form-registration label{
+
+.form-registration label {
     font-size: 16px;
 }
-.form-registration button{
+
+.form-registration button {
     width: 160px;
     height: 40px;
     border-radius: 20px;
@@ -42,21 +57,24 @@
     margin-top: 25px;
 
 }
-.form-registration button:hover{
+
+.form-registration button:hover {
     background-color: var(--main-grey-hover);
     cursor: pointer;
 }
 
-@media screen and (max-width: 768px){
+@media screen and (max-width: 768px) {
     .form-registration input:not(input[type="checkbox"]) {
         width: 280px;
         height: 30px;
     }
+
     .form-registration p,
     .form-registration input[type="checkbox"] {
         font-size: 16px;
     }
-    .form-registration input::placeholder{
+
+    .form-registration input::placeholder {
         font-size: 14px;
     }
 }

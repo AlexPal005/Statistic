@@ -1,22 +1,45 @@
-import React from "react";
+import React, {useState} from "react";
 import "./FormRegistration.css"
+import axios from "axios";
 
-const FormRegistration = ()=>{
-    return(
+const FormRegistration = () => {
+    const [inputs, setInputs] = useState({
+        email: "",
+        nickName: "",
+        password: "",
+
+    });
+
+    const handleChange = (e) => {
+        setInputs(prev => ({...prev, [e.target.name]: e.target.value}));
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try{
+            const res = await axios.post("/auth/register",inputs);
+            console.log(res);
+        }
+        catch(e){
+            console.log(e);
+        }
+
+    };
+    return (
         <div className="form-registration">
             <h1>Реєстрація</h1>
             <form>
                 <p>Нікнейм</p>
-                <input type = "text" placeholder="Нікнейм"/>
+                <input required type="text" placeholder="Нікнейм" name="nickName" onChange={handleChange}/>
                 <p>Електронна пошта</p>
-                <input type="email" placeholder="Email"/>
+                <input required type="email" placeholder="Email" name="email" onChange={handleChange}/>
                 <p>Пароль</p>
-                <input type = "password" placeholder="Пароль"/>
+                <input required type="password" placeholder="Пароль" name="password" onChange={handleChange}/>
                 <p>Підтвердіть пароль</p>
-                <input type = "password" placeholder="Пароль"/><br/>
-                <label><input type = "checkbox"/>Згоден з умовами користувача</label>
+                <input type="password" placeholder="Пароль" onChange={handleChange}/><br/>
+                <label><input required type="checkbox"/>Згоден з умовами користувача</label>
             </form>
-            <button type = "submit">Зареєструватись</button>
+            <button type="submit" onClick={handleSubmit}>Зареєструватись</button>
         </div>
     );
 };
