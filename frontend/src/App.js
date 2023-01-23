@@ -11,10 +11,9 @@ import LogIn from "./components/LogIn";
 class App extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {}
-
+        this.state = {
+        }
     }
-
     render() {
         return (
             <>
@@ -23,7 +22,7 @@ class App extends React.Component {
                     <Routes>
                         <Route path="/main" element={<Main/>}/>
                         <Route path="/registration" element={<FormRegistration/>}/>
-                        <Route path="/LogIn" element={<LogIn/>}/>
+                        <Route path = "/LogIn" element={<LogIn/>}/>
                     </Routes>
                 </div>
                 <Footer/>

@@ -1,5 +1,6 @@
 import {dataBase} from "../database.js";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 export const register = (req, res) => {
 
@@ -9,9 +10,6 @@ export const register = (req, res) => {
         (err, data) => {
             if (err) {
                 return res.json(err);
-            }
-            if (data.length) {
-                res.status(409).json('User already exists!');
             }
 
             //hash the password and create a user
@@ -26,13 +24,36 @@ export const register = (req, res) => {
                 if (err) {
                     return res.json(err);
                 }
-                return res.status(200).json('User has been created!');
+                return res.status(200).json('Користувача створено успішно!');
             });
         });
 };
 
 export const login = (req, res) => {
+    //check user
+    const sqlRequest = "SELECT * FROM user WHERE nick_name = ? ";
 
+    dataBase.query(sqlRequest, [req.body.nickName], (err, data) => {
+        if(err) {
+            return res.json(err);
+        }
+        if (data.length === 0) {
+            return res.status(404).json('Користувача не знайдено!');
+        }
+
+        //check password
+        const isPasswordCorrect = bcrypt.compareSync(req.body.password, data[0].password);
+
+        if(!isPasswordCorrect){
+            return res.status(404).json('Неправильне ім\'я користувача або пароль!');
+        }
+        const token = jwt.sign({id:data[0].id},"jwtkey");
+        const {password, ...other} = data[0];
+
+        res.cookie('access_token', token,{
+            httpOnly: true
+        }).status(200).json(other);
+    });
 };
 
 export const logout = (req, res) => {

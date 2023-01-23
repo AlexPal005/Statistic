@@ -8,6 +8,11 @@
     min-height: calc(100vh - 140px);
     padding: 0 200px;
 }
+.error{
+    color: red;
+    font-size: 16px;
+    margin-top: 10px;
+}
 @media screen and (max-width: 768px){
     .content{
         padding: 0 15px;

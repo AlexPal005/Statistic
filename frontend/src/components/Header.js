@@ -16,6 +16,7 @@ export default class Header extends React.Component {
     render() {
         return (
             <nav className="header">
+
                 <Logo/>
                 <Menu burgerClick = {this.state.burgerClick}/>
                 <div className={
@@ -46,6 +47,7 @@ export default class Header extends React.Component {
                     {this.state.burgerClick ?  <AiOutlineClose size="25px"/> : <AiOutlineMenu size="25px"/> }
                 </div>
             </nav>
+
         );
     }
 }

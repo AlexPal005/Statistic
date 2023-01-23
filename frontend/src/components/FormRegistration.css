@@ -7,7 +7,7 @@
 }
 
 .form-registration input:not(input[type="checkbox"]) {
-    width: 350px;
+    width: 300px;
     height: 35px;
     padding-left: 20px;
     border-radius: 20px;
@@ -26,14 +26,14 @@
     font-size: 16px;
 }
 
-.form-registration p,
+.form-registration form p,
 .form-registration input[type="checkbox"] {
     font-size: 20px;
     margin-top: 10px;
     font-weight: 500;
 }
 
-.form-registration p {
+.form-registration form p {
     margin-bottom: 5px;
 }
 
