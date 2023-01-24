@@ -1,11 +1,11 @@
 import './App.css';
-import Header from "./components/Header";
 import {Route, Routes} from "react-router-dom";
 import React from "react";
 import Main from "./pages/Main";
 import Footer from "./components/Footer";
 import FormRegistration from "./components/FormRegistration";
 import LogIn from "./components/LogIn";
+import {Header} from "./components/Header";
 
 
 class App extends React.Component {
