@@ -6,7 +6,7 @@ import Footer from "./components/Footer";
 import FormRegistration from "./components/FormRegistration";
 import LogIn from "./components/LogIn";
 import {Header} from "./components/Header";
-
+import {Confirmation} from "./components/Confirmation";
 
 class App extends React.Component {
     constructor(props) {
@@ -23,6 +23,7 @@ class App extends React.Component {
                         <Route path="/main" element={<Main/>}/>
                         <Route path="/registration" element={<FormRegistration/>}/>
                         <Route path = "/LogIn" element={<LogIn/>}/>
+                        <Route path = "/confirmation" element={<Confirmation/>}/>
                     </Routes>
                 </div>
                 <Footer/>
