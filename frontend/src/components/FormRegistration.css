@@ -12,6 +12,9 @@
 .form-registration h1{
     margin-bottom: 20px;
 }
+.form-registration input[type = "checkbox"]{
+    margin-bottom: 15px;
+}
 .input-color-blue {
     width: 300px;
     height: 35px;

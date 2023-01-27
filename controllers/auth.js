@@ -2,9 +2,27 @@ import {dataBase} from "../database.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import nodemailer from "nodemailer";
+import randomstring from "randomstring";
 
 export const register = (req, res) => {
 
+    //hash the password and create a user
+    const salt = bcrypt.genSaltSync(10);
+    const hash = bcrypt.hashSync(req.body.password, salt);
+
+    // insert user into db
+    const sqlRequest = "INSERT INTO user (`email`, `nick_name`, `password`) VALUES(?)";
+    const values = [req.body.email, req.body.nickName, hash];
+
+    dataBase.query(sqlRequest, [values], (err, data) => {
+        if (err) {
+            return res.json(err);
+        }
+        return res.status(200).json('Користувача створено успішно!');
+    });
+};
+
+export const confirmation = (req, res) => {
     //check existing user
     const sqlRequest = "SELECT *FROM user WHERE email = ? OR nick_name = ?";
     dataBase.query(sqlRequest, [req.body.email, req.body.nickName],
@@ -13,54 +31,39 @@ export const register = (req, res) => {
                 return res.json(err);
             }
             if (data.length) {
-                return res.status(409).json('Користувач з таким іменем чи паролем вже існує!');
+                return res.status(409).json('Користувач з таким іменем чи поштою вже існує!');
             }
-
-            //hash the password and create a user
-            const salt = bcrypt.genSaltSync(10);
-            const hash = bcrypt.hashSync(req.body.password, salt);
-
-            // insert user into db
-            const sqlRequest = "INSERT INTO user (`email`, `nick_name`, `password`) VALUES(?)";
-            const values = [req.body.email, req.body.nickName, hash];
-
-            dataBase.query(sqlRequest, [values], (err, data) => {
-                if (err) {
-                    return res.json(err);
+            const randomKey = randomstring.generate(10);
+            const mailer = nodemailer.createTransport({
+                host: 'smtp.ukr.net',
+                port: 465,
+                auth: {
+                    user: "StatisticsCom@ukr.net",
+                    pass: "TpqsBIXfFXncfhAS"
                 }
-                return res.status(200).json('Користувача створено успішно!');
             });
+            const options = {
+                from: "StatisticsCom@ukr.net",
+                to: "rudenkosanya06@gmail.com",
+                subject: "Підтвердження реєстрації Statistics",
+                html: `<h1 style = "color: rgb(41, 159, 215)">Statistics</h1> 
+        <h3>${req.body.nickName.toUpperCase()}, для того, щоб підтвердити реєстрацію уведіть в поле даний код: </h3> 
+        <h2>${randomKey}</h2>
+        <h3>Якщо ви не реєструвались, то проігноруйте дане повідомлення!</h3>`
+
+            };
+            mailer.sendMail(options, (error, info) => {
+                if (error) {
+                    console.log(error);
+                    return res.status(500).json(error);
+                } else {
+                    console.log('Email sent: ' + info.response);
+                    return res.status(200).json({key: randomKey, res: "Повідомлення надіслано!"});
+                }
+            });
+
         });
-};
 
-export const confirmation = (req, res) => {
-
-    const mailer = nodemailer.createTransport({
-        host: 'smtp.gmail.com',
-        port: 465,
-        auth: {
-            user: "orudenko394@gmail.com", // generated ethereal user
-            pass: "vvfdvjfyajxdqecx" // generated ethereal password
-        }
-    });
-    const options = {
-        from: "orudenko394@gmail.com", // sender address
-        to: req.body.email, // list of receivers
-        subject: "Підтвердження реєстрації Statistics", // Subject line
-        html: "<h1>Statistics</h1>" +
-            `<h3>${req.body.nickName.toUpperCase()}, для того, щоб підтвердити реєстрацію уведіть в поле даний код: </h3>` +
-            "<h2>12345</h2>" +
-            "<h3>Якщо ви не реєструвались, то проігноруйте дане повідомлення!</h3>"
-
-    };
-    mailer.sendMail(options, (error, info) => {
-        if (error) {
-            console.log(error);
-        } else {
-            console.log('Email sent: ' + info.response);
-        }
-    });
-    return res.status(200).json('Повідомлення надіслано!');
 };
 
 export const login = (req, res) => {

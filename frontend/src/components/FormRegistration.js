@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import "./FormRegistration.css"
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const FormRegistration = () => {
     const [inputs, setInputs] = useState({
@@ -22,6 +23,7 @@ const FormRegistration = () => {
     const [errorPassword, setErrorPassword] = useState("Пароль не може бути пустим");
     const [error2Password, setError2Password] = useState("");
     const [isValid, setIsValid] = useState(false);
+    const [isBot, setIsBot] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -111,27 +113,31 @@ const FormRegistration = () => {
                 break;
         }
     };
+    const handleChangeBot = () => {
+        setIsBot(true);
+    };
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (checkTerms) {
-            try{
+        if (!checkTerms) {
+            setRes("Ви не згодні з умовами користувача!");
+        }
+        else if (!isBot) {
+            setRes("Пройдіть перевірку на бота!");
+        } else {
+            setRes("");
+            try {
                 const res = await axios.post("/auth/confirmation", inputs);
-                navigate("/confirmation");
                 console.log(res);
-            }
-            catch (e) {
+                navigate("/confirmation", {
+                    state: {
+                        result: res.data.key,
+                        inputs
+                    }
+                });
+            } catch (e) {
+                setRes(e.response.data);
                 console.log(e);
             }
-
-            // try {
-            //     const res = await axios.post("/auth/register", inputs);
-            //     setRes(res.data);
-            //     navigate("/confirmation");
-            // } catch (e) {
-            //     setRes(e.response.data);
-            // }
-        } else {
-            setRes("Ви не згодні з умовами користувача!");
         }
     };
 
@@ -182,6 +188,10 @@ const FormRegistration = () => {
                     />
                     Згоден з умовами користувача
                 </label>
+                <ReCAPTCHA
+                    sitekey="6LeiaDAkAAAAADC4P0DtBKloorgJqCCkhW2BKNsO"
+                    onChange={handleChangeBot}
+                />
             </form>
             {res && <p className="error">{res}</p>}
             <button disabled={!isValid} type="submit" onClick={handleSubmit}>Надіслати підтвердження</button>
