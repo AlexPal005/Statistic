@@ -1,7 +1,7 @@
 import React, {useContext, useEffect, useState} from "react";
-import "./LogIn.css"
+import "./LogIn.scss"
 import {useNavigate} from "react-router-dom";
-import {AuthContext} from "../context/authContext";
+import {AuthContext} from "../../context/authContext";
 
 const LogIn = () => {
     const [inputs, setInputs] = useState({

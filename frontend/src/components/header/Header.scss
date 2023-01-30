@@ -1,0 +1,90 @@
+@import "../modulesScss/variables";
+
+.header {
+  background-color: $white;
+  box-shadow: $shadow;
+  @include place-center;
+  @include all-padding;
+  position: relative;
+  justify-content: space-between;
+  @include size(100%, 70px);
+}
+
+.logo-link {
+  @include place-center;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.header__logo img {
+  @include size(50px, 45px);
+}
+
+.header__logo p {
+  font-size: 25px;
+  margin-left: 10px;
+  color: $main-color;
+}
+.header__login-register button {
+  @include button-basic;
+  @include size(140px, 40px);
+}
+
+.header__menu {
+  display: flex;
+}
+
+.header__menu a {
+  text-decoration: none;
+  margin-right: 30px;
+  color: $grey;
+  font-size: 17px;
+}
+
+.header__login-register button:hover {
+  background-color: $main-hover;
+}
+
+.header__login-register a:nth-child(1) {
+  margin-right: 30px;
+}
+
+.mobile-button {
+  display: none;
+}
+@media screen and (max-width: 768px) {
+  .header {
+    padding: 0 10px;
+    height: 50px;
+  }
+
+  .header__logo img {
+    @include size(40px, 35px);
+  }
+
+  .header__logo p {
+    font-size: 25px;
+  }
+
+  .mobile-button {
+    display: block;
+    cursor: pointer;
+    z-index: 10;
+  }
+
+  .header__menu a {
+    margin-top: 20px;
+  }
+  .header .header__login-register{
+    display: none;
+  }
+}
+
+@media screen and (min-width: 769px) and (max-width: 1200px) {
+  .header {
+    padding: 0 20px;
+  }
+  .header__menu a{
+    margin-right: 15px;
+  }
+}

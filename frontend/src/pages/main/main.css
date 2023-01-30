@@ -1,0 +1,7 @@
+.wrapper-content{
+    width: 100%;
+    display: flex;
+}
+.wrapper-content > div{
+    width: 100%;
+}

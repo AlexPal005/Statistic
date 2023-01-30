@@ -1,0 +1,65 @@
+@import "../modulesScss/variables";
+
+.footer {
+  background-color: $white;
+  box-shadow: 0 -16px 20px -5px rgba(0, 0, 0, 0.1);
+  @include all-padding;
+  @include place-center;
+  justify-content: space-between;
+  @include size(100%, 70px);
+}
+
+.footer .header__logo img {
+  @include size(30px, 25px);
+}
+
+.footer .header__logo p {
+  font-size: 20px;
+}
+
+.footer__social-networks {
+  display: flex;
+  justify-content: space-between;
+}
+
+.footer__social-networks > a {
+  margin-left: 10px;
+}
+
+.footer__social-networks svg {
+  @include size(25px, 25px);
+}
+
+.footer__social-networks p,
+.footer .header__menu p,
+.text-about-creator p,
+.text-about-creator p a {
+  color: $grey;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.text-about-creator p a {
+  text-decoration: none;
+}
+
+.text-about-creator p a:hover {
+  text-decoration: underline;
+}
+
+@media screen and (max-width: 1200px) {
+  .footer {
+    height: 200px;
+    padding: 0 20px;
+    flex-direction: column;
+  }
+  .footer div {
+    margin-top: 15px;
+  }
+  .text-about-creator p {
+    margin-bottom: 15px;
+  }
+  .footer .header__menu a:nth-child(3) {
+    margin-right: 0;
+  }
+}

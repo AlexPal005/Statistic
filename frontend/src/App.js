@@ -1,12 +1,13 @@
-import './App.css';
+import './App.scss';
 import {Route, Routes} from "react-router-dom";
 import React from "react";
-import Main from "./pages/Main";
-import Footer from "./components/Footer";
-import FormRegistration from "./components/FormRegistration";
-import LogIn from "./components/LogIn";
-import {Header} from "./components/Header";
+import Main from "./pages/main/Main";
+import Footer from "./components/footer/Footer";
+import FormRegistration from "./components/FormRegistration/FormRegistration";
+import LogIn from "./components/LogIn/LogIn";
+import {Header} from "./components/header/Header";
 import {Confirmation} from "./components/Confirmation";
+import {Account} from "./pages/account/Account";
 
 class App extends React.Component {
     constructor(props) {
@@ -24,6 +25,7 @@ class App extends React.Component {
                         <Route path="/registration" element={<FormRegistration/>}/>
                         <Route path = "/LogIn" element={<LogIn/>}/>
                         <Route path = "/confirmation" element={<Confirmation/>}/>
+                        <Route path = "/account" element={<Account/>}/>
                     </Routes>
                 </div>
                 <Footer/>

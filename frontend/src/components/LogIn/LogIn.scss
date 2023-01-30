@@ -1,0 +1,13 @@
+@import "./src/components/modulesScss/variables";
+.log-in button{
+    width: 130px;
+}
+.log-in{
+    padding-top: 10%;
+}
+.icon-account{
+    @include size(20px, 20px);
+    position: relative;
+    top: 4px;
+    color: $main-icon;
+}

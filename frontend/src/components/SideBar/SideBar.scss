@@ -1,0 +1,19 @@
+@import "../modulesScss/variables";
+
+.side-bar{
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid $main-hover;
+}
+.side-bar__links-menu{
+    text-decoration: none;
+    font-size: 17px;
+    font-weight: bold;
+    color: $main-color;
+    margin-top: 10px;
+}
+.side-bar__links-menu:hover{
+    text-decoration: underline;
+    color: $main-hover;
+}

@@ -1,8 +1,8 @@
 import React from "react";
-import "./Footer.css";
-import Logo from "./Logo";
+import "./Footer.scss";
+import Logo from "../Logo";
 import {BsFacebook, BsInstagram, BsTwitter} from 'react-icons/bs';
-import Menu from "./Menu";
+import Menu from "../Menu";
 
 class Footer extends React.Component{
     render(){
@@ -10,13 +10,13 @@ class Footer extends React.Component{
             <footer className="footer">
                 <Logo/>
                 <div className="footer__social-networks">
-                    <a href ="https://www.facebook.com/" target="_blank" rel = "noreferrer">
+                    <a href ="frontend/src/components/footer/Footer" target="_blank" rel = "noreferrer">
                         <BsFacebook color="grey"/>
                     </a>
-                    <a href ="https://www.instagram.com/" target="_blank" rel = "noreferrer">
+                    <a href ="frontend/src/components/footer/Footer" target="_blank" rel = "noreferrer">
                         <BsInstagram color ="grey"/>
                     </a>
-                    <a href ="https://www.twitter.com/" target="_blank" rel = "noreferrer">
+                    <a href ="frontend/src/components/footer/Footer" target="_blank" rel = "noreferrer">
                         <BsTwitter color = "grey"/>
                     </a>
                 </div>

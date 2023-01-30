@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import "./FormRegistration.css"
+import "./FormRegistration.scss"
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import ReCAPTCHA from "react-google-recaptcha";
