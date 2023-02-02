@@ -1,0 +1,54 @@
+@import "./src/components/modulesScss/variables";
+@import "./src/components/FormRegistration/FormRegistration";
+.basic-select{
+  @extend .input-color-blue;
+  border-radius: 5px;
+}
+.form-add-poll form{
+  width: auto;
+  @include place-center;
+  flex-direction: column;
+}
+.item-text{
+  font-size: 16px;
+  color: $main-color;
+  margin-bottom: 15px;
+}
+.textarea-basic{
+  @extend .input-color-blue;
+  border-radius: 5px;
+  padding: 15px;
+  transition: none;
+  max-width: 500px;
+  max-height: 200px;
+}
+.textarea-question{
+  @extend .textarea-basic;
+  @include size(300px, 90px);
+}
+.textarea-answer{
+  @extend .textarea-basic;
+  @include size(300px, 70px);
+}
+.answers{
+  @include place-center;
+  flex-direction: column;
+}
+.button-answer{
+  background-color: $main-color;
+  color: $white;
+  @include size(90px, 25px);
+  border-radius: 5px;
+  cursor: pointer;
+  border: none;
+  margin-bottom: 15px;
+  font-weight: bold;
+}
+.block-answer p {
+  margin-right: 5px;
+}
+.buttons-answer{
+  width: 70%;
+  display: flex;
+  justify-content: space-around;
+}

@@ -26,7 +26,7 @@ export const Confirmation = () => {
         }
     }
     return (
-        <div className="form-registration">
+        <div className="basic-form">
             <h1>Підтвердження</h1>
             <form>
                 <input className="input-color-blue" type="text" placeholder="Код з пошти" onChange={handleChange}/>

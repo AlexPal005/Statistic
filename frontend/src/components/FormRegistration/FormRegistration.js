@@ -142,10 +142,10 @@ const FormRegistration = () => {
     };
 
     return (
-        <div className="form-registration">
+        <div className="basic-form">
             <h1>Реєстрація</h1>
             <form>
-                {(nickNameDirty && errorNickName) && <p>{errorNickName}</p>}
+                {(nickNameDirty && errorNickName) && <p className="error">{errorNickName}</p>}
                 <input required
                        className={(nickNameDirty && errorNickName) ? ["input-color-blue", "error-input"].join(" ") : "input-color-blue"}
                        type="text"
@@ -154,7 +154,7 @@ const FormRegistration = () => {
                        onChange={handleChange}
                        onBlur={handleBlur}
                 /><br/>
-                {(emailDirty && errorEmail) && <p>{errorEmail}</p>}
+                {(emailDirty && errorEmail) && <p className="error">{errorEmail}</p>}
                 <input required
                        className={(emailDirty && errorEmail) ? ["input-color-blue", "error-input"].join(" ") : "input-color-blue"}
                        type="email"
@@ -163,7 +163,7 @@ const FormRegistration = () => {
                        onChange={handleChange}
                        onBlur={handleBlur}
                 /><br/>
-                {(passwordDirty && errorPassword) && <p>{errorPassword}</p>}
+                {(passwordDirty && errorPassword) && <p className="error">{errorPassword}</p>}
                 <input required
                        className={(passwordDirty && errorPassword) ? ["input-color-blue", "error-input"].join(" ") : "input-color-blue"}
                        type="password"
@@ -172,7 +172,7 @@ const FormRegistration = () => {
                        onChange={handleChange}
                        onBlur={handleBlur}
                 /><br/>
-                {(password2Dirty && error2Password) && <p>{error2Password}</p>}
+                {(password2Dirty && error2Password) && <p className="error">{error2Password}</p>}
                 <input required
                        type="password"
                        className={(password2Dirty && error2Password) ? ["input-color-blue", "error-input"].join(" ") : "input-color-blue"}
@@ -194,7 +194,7 @@ const FormRegistration = () => {
                 />
             </form>
             {res && <p className="error">{res}</p>}
-            <button disabled={!isValid} type="submit" onClick={handleSubmit}>Надіслати підтвердження</button>
+            <button disabled={!isValid} type="submit" onClick={handleSubmit} className="button-form">Надіслати</button>
         </div>
     );
 };

@@ -10,13 +10,13 @@ class Footer extends React.Component{
             <footer className="footer">
                 <Logo/>
                 <div className="footer__social-networks">
-                    <a href ="frontend/src/components/footer/Footer" target="_blank" rel = "noreferrer">
+                    <a href ="https://www.facebook.com/" target="_blank" rel = "noreferrer">
                         <BsFacebook color="grey"/>
                     </a>
-                    <a href ="frontend/src/components/footer/Footer" target="_blank" rel = "noreferrer">
+                    <a href ="https://www.instagram.com/" target="_blank" rel = "noreferrer">
                         <BsInstagram color ="grey"/>
                     </a>
-                    <a href ="frontend/src/components/footer/Footer" target="_blank" rel = "noreferrer">
+                    <a href ="https://twitter.com/" target="_blank" rel = "noreferrer">
                         <BsTwitter color = "grey"/>
                     </a>
                 </div>

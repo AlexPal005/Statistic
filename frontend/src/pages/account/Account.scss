@@ -4,13 +4,8 @@
 }
 .icon-menu{
     @include size(20px, 20px);
-    position: absolute;
     color: $main-icon;
-}
-.content-account-page__links-menu{
     position: relative;
-    cursor: pointer;
-}
-.content-account-page__link{
-    padding-left: 25px;
+    top: 5px;
+    margin-right: 5px;
 }

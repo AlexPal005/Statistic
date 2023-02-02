@@ -9,7 +9,6 @@
   justify-content: space-between;
   @include size(100%, 70px);
 }
-
 .logo-link {
   @include place-center;
   text-decoration: none;
@@ -27,7 +26,6 @@
 }
 .header__login-register button {
   @include button-basic;
-  @include size(140px, 40px);
 }
 
 .header__menu {
@@ -42,13 +40,8 @@
 }
 
 .header__login-register button:hover {
-  background-color: $main-hover;
+  background-color: $main-hover-grey;
 }
-
-.header__login-register a:nth-child(1) {
-  margin-right: 30px;
-}
-
 .mobile-button {
   display: none;
 }

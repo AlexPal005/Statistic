@@ -1,10 +1,11 @@
 $white: #ffffff;
 $main-color: rgb(8, 39, 119);
-$main-hover: rgb(8, 39, 119, 0.8);
+$main-hover-blue: rgb(8, 39, 119, 0.8);
+$main-hover-grey: #d3d3d3;
 $shadow: 0px 16px 20px -5px rgba(0, 0, 0, 0.1);
 $grey: grey;
 $red-error: red;
-$main-icon: #85680a;
+$main-icon: #ef0a85;
 
 
 @mixin size($width, $height) {
@@ -22,12 +23,13 @@ $main-icon: #85680a;
 }
 
 @mixin button-basic{
-  border-radius: 20px;
+  border-radius: 40px;
   border: none;
-  background-color: $main-color;
-  font-size: 17px;
+  background-color: rgba(231, 228, 228, 0);
+  font-size: 16px;
   font-weight: 600;
-  color: $white;
+  color: $main-color;
   cursor: pointer;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
+  padding: 10px;
 }

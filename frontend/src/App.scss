@@ -3,16 +3,16 @@
     margin: 0;
     padding:0;
     box-sizing: border-box;
-    font-family: 'Rubik', sans-serif;
+    font-family: 'Noto Sans', sans-serif;
 }
 .content{
-    min-height: calc(100vh - 140px);
+    min-height: calc(100vh - 160px);
     @include all-padding;
 }
 .error{
     color: red;
-    font-size: 16px;
-    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 15px;
 }
 @media screen and (max-width: 768px){
     .content{

@@ -1,23 +1,19 @@
 @import "../modulesScss/variables";
 
-.form-registration {
+.basic-form {
   width: 100%;
   @include place-center;
   flex-direction: column;
-  padding-top: 7%;
+  padding-top: 50px;
 }
 
-.form-registration form {
+.basic-form form {
   width: 300px;
   overflow-wrap: break-word;
 }
 
-.form-registration h1 {
+.basic-form h1 {
   margin-bottom: 20px;
-}
-
-.form-registration input[type = "checkbox"] {
-  margin-bottom: 15px;
 }
 
 .input-color-blue {
@@ -42,64 +38,51 @@
   outline: none;
 }
 
-.form-registration input::placeholder {
+.basic-form input::placeholder {
   font-size: 16px;
 }
 
-.form-registration input[type="checkbox"] {
+.basic-form input[type="checkbox"] {
   font-size: 20px;
   margin-top: 10px;
   font-weight: 500;
-}
-
-.form-registration form p {
-  color: red;
-  margin-bottom: 10px;
-  font-size: 15px;
-}
-
-.form-registration input[type="checkbox"] {
+  margin-bottom: 15px;
   margin-right: 10px;
 }
 
-.form-registration label {
+.basic-form label {
   font-size: 16px;
 }
 
-.form-registration button {
-  @include size(200px, 40px);
-  border-radius: 20px;
-  border: none;
-  background-color: green;
-  font-size: 17px;
-  font-weight: 600;
-  color: $white;
+.button-form {
+  @include size(150px, 40px);
+  @include button-basic;
   margin-top: 25px;
-
+  background-color: green;
+  color: $white;
 }
 
-.form-registration button:hover {
-  background-color: $main-hover;
+.button-form:hover {
+  background-color: $main-hover-grey;
   cursor: pointer;
 }
 
-.form-registration button:disabled {
-  background-color: $main-hover;
+.button-form:disabled {
+  background-color: $main-hover-grey;
   cursor: auto;
 }
 
 @media screen and (max-width: 768px) {
-  .form-registration input:not(input[type="checkbox"]) {
-    width: 280px;
-    height: 30px;
+  .basic-form input:not(input[type="checkbox"]) {
+    @include size(280px, 30px);
   }
 
-  .form-registration p,
-  .form-registration input[type="checkbox"] {
+  .basic-form p,
+  .basic-form input[type="checkbox"] {
     font-size: 16px;
   }
 
-  .form-registration input::placeholder {
+  .basic-form input::placeholder {
     font-size: 14px;
   }
 }

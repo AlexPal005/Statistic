@@ -1,5 +1,5 @@
 import React from "react";
-import "./main.css";
+import "./main.scss";
 import {SideBar} from "../../components/SideBar/SideBar";
 const Main = ()=>{
     return(

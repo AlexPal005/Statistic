@@ -6,7 +6,7 @@ import {AuthContext} from "../../context/authContext";
 const LogIn = () => {
     const [inputs, setInputs] = useState({
         nickName: "",
-        password: "",
+        password: ""
     });
     const [res, setRes] = useState(null);
     const [nickNameDirty, setNickNameDirty] = useState(false);
@@ -18,37 +18,43 @@ const LogIn = () => {
     const {login} = useContext(AuthContext);
 
     useEffect(() => {
-        if (errorNickName || errorPassword ) {
+        if (errorNickName || errorPassword) {
             setIsValid(false);
         } else {
             setIsValid(true);
         }
-    }, [errorNickName,  errorPassword]);
+    }, [errorNickName, errorPassword]);
 
     const handleChange = (e) => {
         setInputs(prev => ({...prev, [e.target.name]: e.target.value}));
         setRes("");
-
+        switch (e.target.name) {
+            case 'nickName':
+                if (e.target.value.length !== 0) {
+                    setErrorNickName("");
+                } else {
+                    setErrorNickName("Нікнейм не може бути пустим");
+                }
+                break;
+            case 'password':
+                if (e.target.value.length !== 0) {
+                    setErrorPassword("");
+                } else {
+                    setErrorPassword("Пароль не може бути пустим");
+                }
+                break;
+            default:
+                setRes("Помилка!");
+                break;
+        }
     };
     const handleBlur = (e) => {
         switch (e.target.name) {
             case 'nickName':
                 setNickNameDirty(true);
-                if(e.target.value.length !== 0){
-                    setErrorNickName("");
-                }
-                else{
-                    setErrorNickName("Нікнейм не може бути пустим");
-                }
                 break;
             case 'password':
                 setPasswordDirty(true);
-                if(e.target.value.length !== 0){
-                    setErrorPassword("");
-                }
-                else{
-                    setErrorPassword("Пароль не може бути пустим");
-                }
                 break;
             default:
                 setRes("Помилка!");
@@ -60,26 +66,26 @@ const LogIn = () => {
 
         try {
             await login(inputs);
-            navigate("/main");
+            navigate("/account");
         } catch (e) {
             setRes(e.response.data);
         }
     };
     return (
-        <div className="form-registration log-in">
+        <div className="basic-form log-in">
             <h1>Увійти</h1>
             <form>
-                {(nickNameDirty && errorNickName) && <p>{errorNickName}</p>}
+                {(nickNameDirty && errorNickName) && <p className="error">{errorNickName}</p>}
                 <input type="text"
                        className={(nickNameDirty && errorNickName) ? ["input-color-blue", "error-input"].join(" ") : "input-color-blue"}
-                       placeholder="Логін" name = "nickName" onChange={handleChange} onBlur={handleBlur}/><br/>
-                {(passwordDirty && errorPassword) && <p>{errorPassword}</p>}
+                       placeholder="Логін" name="nickName" onChange={handleChange} onBlur={handleBlur}/><br/>
+                {(passwordDirty && errorPassword) && <p className="error">{errorPassword}</p>}
                 <input type="password"
                        className={(passwordDirty && errorPassword) ? ["input-color-blue", "error-input"].join(" ") : "input-color-blue"}
-                       placeholder="Пароль" name = "password" onChange={handleChange} onBlur={handleBlur}/><br/>
+                       placeholder="Пароль" name="password" onChange={handleChange} onBlur={handleBlur}/><br/>
             </form>
             {res && <p className="error">{res}</p>}
-            <button disabled={!isValid} type="submit" onClick={handleSubmit}>Увійти</button>
+            <button disabled={!isValid} type="submit" onClick={handleSubmit} className="button-form">Увійти</button>
         </div>
     );
 };
