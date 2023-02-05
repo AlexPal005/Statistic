@@ -32,7 +32,7 @@ export const Confirmation = () => {
                 <input className="input-color-blue" type="text" placeholder="Код з пошти" onChange={handleChange}/>
             </form>
             {res && <p className="error">{res}</p>}
-            <button type="submit" onClick={handleSubmit}>Зареєструватись</button>
+            <button type="submit" onClick={handleSubmit} className="button-form">Зареєструватись</button>
         </div>
     );
 };

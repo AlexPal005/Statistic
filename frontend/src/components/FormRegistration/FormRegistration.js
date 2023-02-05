@@ -79,7 +79,8 @@ const FormRegistration = () => {
         const regex = /^[a-z0-9_.]+$/;
         if (!regex.test(String(e.target.value).toLowerCase())) {
             setErrorNickName('Нікнейм має бути написаним латиницею з цифрами розділеними "." або "_"');
-        } else {
+        }
+        else {
             setErrorNickName("");
         }
     };
@@ -120,8 +121,7 @@ const FormRegistration = () => {
         e.preventDefault();
         if (!checkTerms) {
             setRes("Ви не згодні з умовами користувача!");
-        }
-        else if (!isBot) {
+        } else if (!isBot) {
             setRes("Пройдіть перевірку на бота!");
         } else {
             setRes("");

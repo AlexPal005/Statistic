@@ -1,0 +1,34 @@
+@import "./src/components/modulesScss/variables";
+
+.content-confirmation-window {
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: rgba(102, 102, 102, 0.5);
+  width: 100%;
+  height: 100%;
+  z-index: 50;
+}
+
+.confirmation-window {
+  position: absolute;
+  width: 600px;
+  height: 400px;
+  top: 50%;
+  left: 50%;
+  z-index: 100;
+  transform: translate(-50%, -50%);
+  background-color: red;
+  animation: animation-confirm 0.5s;
+}
+
+@keyframes animation-confirm{
+  from {
+    width: 100px;
+    height: 150px;
+  }
+  to {
+    width: 600px;
+    height: 400px;
+  }
+}
