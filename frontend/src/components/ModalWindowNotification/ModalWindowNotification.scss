@@ -1,0 +1,15 @@
+@import "../modulesScss/variables";
+.modal-notification{
+  width: 450px;
+  height: 50px;
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  background-color: $white;
+  transform: translate(-50%);
+  box-shadow: 0 0 18px 7px rgba(0, 128, 0, 0.66);
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

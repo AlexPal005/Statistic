@@ -5,6 +5,7 @@
     box-sizing: border-box;
     font-family: 'Noto Sans', sans-serif;
 }
+
 .content{
     min-height: calc(100vh - 160px);
     @include all-padding;

@@ -4,7 +4,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  background: rgba(102, 102, 102, 0.5);
+  background: rgba(0, 0, 0, 0.5);
   width: 100%;
   height: 100%;
   z-index: 50;
@@ -18,11 +18,59 @@
   left: 50%;
   z-index: 100;
   transform: translate(-50%, -50%);
-  background-color: red;
-  animation: animation-confirm 0.5s;
+  background-color: $white;
+  animation: animation-confirm 0.3s;
+  @include place-center;
+  flex-direction: column;
+  border-radius: 10px;
+  box-shadow: 0px 0px 18px 7px rgba(0,0,0,0.6);
 }
 
-@keyframes animation-confirm{
+.main-text-modal {
+  margin-top: 15px;
+  font-size: 22px;
+  margin-bottom: 15px;
+  color: $main-color;
+}
+.modal-content{
+  margin: 20px 0;
+}
+.line{
+  border-top: 1px solid rgba(128, 128, 128, 0.62);
+  width: 100%;
+}
+.question-modal{
+  font-size: 25px;
+  font-weight: bold;
+  color: $main-color;
+}
+.buttons-block-modal{
+  margin: 20px 0;
+  width: 250px;
+  display: flex;
+  justify-content: space-between;
+}
+.button-goBack{
+  width: 100px;
+  height: 35px;
+  background-color: $main-color;
+  color: white;
+  font-size: 16px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+}
+.buttonSend{
+  width: 100px;
+  height: 35px;
+  background-color: green;
+  color: white;
+  font-size: 16px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+}
+@keyframes animation-confirm {
   from {
     width: 100px;
     height: 150px;

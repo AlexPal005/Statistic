@@ -1,15 +1,29 @@
 import "./NewPoll.scss";
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useRef, useState} from "react";
 import axios from "axios";
 import {AuthContext} from "../../../context/authContext";
 import {AnswerTextarea} from "./AnswerTextarea";
 import {ConfirmationPoll} from "./ConformationPoll/ConfirmationPoll";
+import {ModalWindowNotification} from "../../../components/ModalWindowNotification/ModalWindowNotification";
 
 export const NewPoll = () => {
+    //topics from db
     const [topics, setTopics] = useState(null);
-    const [answers, setAnswers] = useState(
-        [<AnswerTextarea key={1} id={0} changeAnswers={changeAnswers} getErrorAnswer={getErrorAnswer}/>,
-            <AnswerTextarea key={2} id={1} changeAnswers={changeAnswers} getErrorAnswer={getErrorAnswer}/>]);
+    //textarea answers
+    const [answers, setAnswers] = useState([
+        <AnswerTextarea
+            key={1}
+            id={0}
+            changeAnswers={changeAnswers}
+            getErrorAnswer={getErrorAnswer}
+        />,
+        <AnswerTextarea
+            key={2}
+            id={1}
+            changeAnswers={changeAnswers}
+            getErrorAnswer={getErrorAnswer}
+        />
+    ]);
     const currentUser = useContext(AuthContext);
 
     //data from fields
@@ -19,12 +33,14 @@ export const NewPoll = () => {
         {
             id: 0,
             answer: "",
-            error: "Відповіді не можуть бути пустими"
+            error: "Відповіді не можуть бути пустими",
+            e: null
         },
         {
             id: 1,
             answer: "",
-            error: "Відповіді не можуть бути пустими"
+            error: "Відповіді не можуть бути пустими",
+            e: null
         }
     ]);
     // topic id
@@ -36,7 +52,6 @@ export const NewPoll = () => {
         topicId: topicId,
         userId: currentUser.currentUser.id
     });
-
 
     ///////////////////////////////////////////////////////////////////////////////////
     //validation
@@ -53,6 +68,7 @@ export const NewPoll = () => {
         } else {
             setIsValid(true);
         }
+
     }, [questionError, answersError]);
 
     // set error answers
@@ -82,7 +98,7 @@ export const NewPoll = () => {
                 }
             })
         )
-    };
+    }
 
 
     const handleBlurQuestion = () => {
@@ -109,7 +125,7 @@ export const NewPoll = () => {
         setAnswersData(prevState =>
             prevState.map(item => {
                 if (item.id === id) {
-                    return {...item, answer: event.target.value};
+                    return {...item, answer: event.target.value, e: event};
                 } else {
                     return item;
                 }
@@ -132,11 +148,22 @@ export const NewPoll = () => {
     // add the new component textarea
     const handleAddAnswer = (e) => {
         e.preventDefault();
-        setAnswersData(prev => [...prev, {id: answers.length, answer: "", error: "Відповіді не можуть бути пустими"}])
+        setAnswersData(prev => [...prev, {
+            id: answers.length,
+            answer: "",
+            error: "Відповіді не можуть бути пустими",
+            e: null
+        }])
         setAnswers(prev => {
-            return [...prev,
-                <AnswerTextarea key={prev.length + 1} id={prev.length} changeAnswers={changeAnswers}
-                                getErrorAnswer={getErrorAnswer}/>]
+            return (
+                [...prev,
+                    <AnswerTextarea
+                        key={prev.length + 1}
+                        id={prev.length}
+                        changeAnswers={changeAnswers}
+                        getErrorAnswer={getErrorAnswer}
+                    />
+                ]);
         });
     };
 
@@ -145,6 +172,7 @@ export const NewPoll = () => {
         e.preventDefault();
         if (answers.length > 2) {
             setAnswers(prev => prev.slice(0, prev.length - 1));
+            setAnswersData(prev => prev.slice(0, prev.length - 1));
         }
     }
 
@@ -158,66 +186,94 @@ export const NewPoll = () => {
         setResultPoll(prev => ({...prev, question: question, answers: answersString, topicId: topicId}));
     };
     useEffect(editResultPoll, [question, answersData, topicId]);
-    //send the form to the server
-    // const handleSendForm = async (e) => {
-    //     e.preventDefault();
-    //     try {
-    //         const res = await axios.post("/polls/addPoll", resultPoll);
-    //         console.log(resultPoll);
-    //         console.log(res);
-    //     } catch {
-    //         console.log(e);
-    //     }
-    //
-    // };
 
     // check poll
     const [isClickedSend, setIsClickedSend] = useState(false);
-    const handleSendForm = async (e) => {
+    const handleSendForm = (e) => {
         e.preventDefault();
         setIsClickedSend(true);
     };
 
+    ///////////////////////////////////////////////////////////////////////////////////
+    // close the modal window
     const closeModal = () => {
         setIsClickedSend(prev => !prev);
     }
+    ///////////////////////////////////////////////////////////////////////////////////
+    // clean up the form
+    const refQuestion = useRef(null);
+    const clean = () => {
+        answersData.forEach((answer) => {
+            answer.e.target.value = '';
+        });
+        refQuestion.current.value = '';
+        answersData.length = 2;
+        answers.length = 2;
+        setQuestionDirty(false);
+        setQuestionError("Запитання не може бути пустим!");
+        setAnswersError("Помилка");
 
+    };
+    ///////////////////////////////////////////////////////////////////////////////////
+    // show result window
+    const [isSendBD, setIsSendBD] = useState(false);
+    const [messageRes, setMessageRes] = useState("");
+    const showModalWindowNotification = (message) => {
+        setIsSendBD(true);
+        setTimeout(() => {
+            setIsSendBD(false);
+        }, 5000);
+        setMessageRes(message);
+    };
     return (
-        <div className="basic-form form-add-poll">
-            <form>
-                <p className="item-text">Додайте запитання</p>
-                {(questionDirty && questionError) && <p className="error">{questionError}</p>}
-                <textarea
-                    className={(questionDirty && questionError) ? ["textarea-question", "error-input"].join(" ") : "textarea-question"}
-                    onChange={handleChangeQuestion}
-                    onBlur={handleBlurQuestion}
-                    placeholder="Запитання..."
-                ></textarea>
-                <p className="item-text">Додайте відповіді для опитування (мінімум 2)<br/>
-                    Кожне питання записуйте в окремому вікні!</p>
-                <div className="answers">
-                    {answers}
-                </div>
-                <div className="buttons-answer">
-                    <button className="button-answer" onClick={handleAddAnswer}>+</button>
-                    <button className="button-answer" onClick={handleDeleteAnswer}>-</button>
-                </div>
-                <p className="item-text">Оберіть тематику вашого опитування</p>
-                <select className="basic-select" onChange={handleGetTopic}>
-                    {topics && topics.map((topic) => {
-                        return (
-                            <option
-                                key={topic.id}
-                                value={topic.id.toString()}
-                            >
-                                {topic.name}
-                            </option>
-                        );
-                    })}
-                </select>
-                <button disabled={!isValid} className="button-form" onClick={handleSendForm}>Додати</button>
-                {isClickedSend && <ConfirmationPoll closeModal={closeModal}/>}
-            </form>
-        </div>
+        <>
+            <div className="basic-form form-add-poll">
+                <form>
+                    <p className="item-text">Додайте запитання</p>
+                    {(questionDirty && questionError) && <p className="error">{questionError}</p>}
+                    <textarea
+                        className={(questionDirty && questionError) ? ["textarea-question", "error-input"].join(" ") : "textarea-question"}
+                        onChange={handleChangeQuestion}
+                        onBlur={handleBlurQuestion}
+                        placeholder="Запитання..."
+                        ref={refQuestion}
+                    ></textarea>
+                    <p className="item-text">Додайте відповіді для опитування (мінімум 2)<br/>
+                        Кожне питання записуйте в окремому вікні!</p>
+                    <div className="answers">
+                        {answers}
+                    </div>
+                    <div className="buttons-answer">
+                        <button className="button-answer" onClick={handleAddAnswer}>+</button>
+                        <button className="button-answer" onClick={handleDeleteAnswer}>-</button>
+                    </div>
+                    <p className="item-text">Оберіть тематику вашого опитування</p>
+                    <select className="basic-select" onChange={handleGetTopic}>
+                        {topics && topics.map((topic) => {
+                            return (
+                                <option
+                                    key={topic.id}
+                                    value={topic.id.toString()}
+                                >
+                                    {topic.name}
+                                </option>
+                            );
+                        })}
+                    </select>
+                    <button disabled={!isValid} className="button-form" onClick={handleSendForm}>Додати</button>
+                </form>
+            </div>
+            {isClickedSend &&
+                <ConfirmationPoll
+                    closeModal={closeModal}
+                    poll={resultPoll}
+                    clean={clean}
+                    showModalWindowNotification={showModalWindowNotification}
+                />
+            }
+            {isSendBD &&
+                <ModalWindowNotification message={messageRes}/>
+            }
+        </>
     );
 };
