@@ -20,7 +20,7 @@ export const SideBar = () => {
     return (
         <aside className="side-bar">
             {topics && topics.map((topic)=>{
-                return <Link key = {topic.id} to="/" className="side-bar__links-menu" ><span>{topic.name}</span></Link>
+                return <Link key = {topic.id} to="/main" className="side-bar__links-menu" ><span>{topic.name}</span></Link>
             })}
         </aside>
     );

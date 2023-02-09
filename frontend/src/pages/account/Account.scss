@@ -3,9 +3,17 @@
     display: flex;
 }
 .icon-menu{
-    @include size(20px, 20px);
-    color: $main-icon;
-    position: relative;
-    top: 5px;
+    @include size(30px, 30px);
+    color: $icon-color;
     margin-right: 5px;
+}
+.active-link{
+    color: $icon-color;
+    text-decoration: underline;
+}
+.side-bar-account{
+    @include place-center;
+}
+.side-bar-margin{
+    margin-top: 4px;
 }

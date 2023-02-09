@@ -1,19 +1,20 @@
 @import "../modulesScss/variables";
 
 .side-bar{
-    width: 20%;
+    width: 300px;
+    padding-top: 15px;
     display: flex;
     flex-direction: column;
-    border-right: 1px solid $main-hover-grey;
+    border-right: 1px solid $grey-disabled;
+    min-height: calc(100vh - 140px);
 }
 .side-bar__links-menu{
     text-decoration: none;
     font-size: 16px;
+    font-weight: bold;
     color: $main-color;
-    margin-top: 10px;
     cursor: pointer;
 }
 .side-bar__links-menu:hover{
     text-decoration: underline;
-    color: $main-hover-blue;
 }

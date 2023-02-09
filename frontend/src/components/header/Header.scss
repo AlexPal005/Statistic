@@ -1,13 +1,14 @@
 @import "../modulesScss/variables";
 
 .header {
-  background-color: $white;
-  box-shadow: $shadow;
+  box-shadow: 0px 16px 20px -9px rgba(0, 0, 0, 0.1);
   @include place-center;
   @include all-padding;
+  @include size(100%, 70px);
   position: relative;
   justify-content: space-between;
-  @include size(100%, 70px);
+  background-color: rgba(42, 134, 168, 0.08);
+
 }
 .logo-link {
   @include place-center;
@@ -20,14 +21,21 @@
 }
 
 .header__logo p {
-  font-size: 25px;
+  font-size: 30px;
   margin-left: 10px;
   color: $main-color;
 }
 .header__login-register button {
   @include button-basic;
+  background-color: initial;
+  color: $main-color;
+  border-radius: 20px;
+  padding: 10px;
 }
 
+.header__login-register button:hover{
+  text-decoration: underline;
+}
 .header__menu {
   display: flex;
 }
@@ -35,12 +43,12 @@
 .header__menu a {
   text-decoration: none;
   margin-right: 30px;
-  color: $grey;
-  font-size: 17px;
 }
-
-.header__login-register button:hover {
-  background-color: $main-hover-grey;
+.header__login-register{
+  display: flex;
+}
+.header__login-register button:active {
+  background-color: $grey-disabled;
 }
 .mobile-button {
   display: none;

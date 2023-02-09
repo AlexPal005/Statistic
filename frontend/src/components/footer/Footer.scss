@@ -1,13 +1,12 @@
 @import "../modulesScss/variables";
 
 .footer {
-  background-color: $white;
-  box-shadow: 0 -16px 20px -5px rgba(0, 0, 0, 0.1);
-  @include all-padding;
+  background-color: rgba(42, 134, 168, 0.08);
+  box-shadow: 0 -16px 20px -9px rgba(0, 0, 0, 0.1);
   @include place-center;
   justify-content: space-between;
-  @include size(100%, 70px);
-  margin-top: 20px;
+  height: 70px;
+  @include all-padding;
 }
 
 .footer .header__logo img {
@@ -36,7 +35,7 @@
 .text-about-creator p,
 .text-about-creator p a {
   color: $grey;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: 600;
 }
 
@@ -46,6 +45,10 @@
 
 .text-about-creator p a:hover {
   text-decoration: underline;
+}
+
+.instagram{
+  color: #fc6447;
 }
 
 @media screen and (max-width: 1200px) {

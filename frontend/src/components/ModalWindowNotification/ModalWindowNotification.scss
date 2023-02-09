@@ -1,15 +1,29 @@
 @import "../modulesScss/variables";
-.modal-notification{
-  width: 450px;
-  height: 50px;
+
+.modal-notification {
+  @include size(450px, 50px);
+  @include place-center;
   position: fixed;
   top: 20px;
   left: 50%;
   background-color: $white;
   transform: translate(-50%);
-  box-shadow: 0 0 18px 7px rgba(0, 128, 0, 0.66);
+  box-shadow: 0 0 20px -2px $green;
   border-radius: 10px;
-  display: flex;
   justify-content: center;
-  align-items: center;
+  color: $main-color;
+  border: 1px solid $green;
+  animation: modal-notification-animate-show 0.3s;
+  z-index: 100;
+}
+
+@keyframes modal-notification-animate-show {
+  0% {
+    @include size(0, 0);
+    font-size: 0;
+  }
+  100% {
+    @include size(450px, 50px);
+    font-size: 16px;
+  }
 }

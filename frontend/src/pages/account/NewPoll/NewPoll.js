@@ -222,12 +222,12 @@ export const NewPoll = () => {
         setIsSendBD(true);
         setTimeout(() => {
             setIsSendBD(false);
-        }, 5000);
+        }, 3000);
         setMessageRes(message);
     };
     return (
         <>
-            <div className="basic-form form-add-poll">
+            <div className="form-add-poll">
                 <form>
                     <p className="item-text">Додайте запитання</p>
                     {(questionDirty && questionError) && <p className="error">{questionError}</p>}

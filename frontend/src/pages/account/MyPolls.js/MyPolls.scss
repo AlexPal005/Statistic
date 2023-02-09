@@ -1,0 +1,22 @@
+@import "./src/components/modulesScss/variables";
+.content-my-polls{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 30px;
+}
+.card{
+  width: 50%;
+  border-radius: 10px;
+  border: 1px solid $grey;
+  padding: 15px;
+  margin-bottom: 25px;
+}
+.card-question{
+  font-size: 25px;
+  color: $main-color;
+}
+.card-answer{
+  font-size: 20px;
+}

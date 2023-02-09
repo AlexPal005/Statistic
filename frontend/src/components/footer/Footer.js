@@ -11,13 +11,13 @@ class Footer extends React.Component{
                 <Logo/>
                 <div className="footer__social-networks">
                     <a href ="https://www.facebook.com/" target="_blank" rel = "noreferrer">
-                        <BsFacebook color="grey"/>
+                        <BsFacebook color="#046de4"/>
                     </a>
                     <a href ="https://www.instagram.com/" target="_blank" rel = "noreferrer">
-                        <BsInstagram color ="grey"/>
+                        <BsInstagram className="instagram"/>
                     </a>
                     <a href ="https://twitter.com/" target="_blank" rel = "noreferrer">
-                        <BsTwitter color = "grey"/>
+                        <BsTwitter color = "#1d9aef"/>
                     </a>
                 </div>
                 <Menu/>

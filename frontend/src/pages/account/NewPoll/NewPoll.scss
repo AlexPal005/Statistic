@@ -4,15 +4,19 @@
   @extend .input-color-blue;
   border-radius: 5px;
 }
+.form-add-poll{
+  @extend .basic-form;
+  padding-bottom: 40px;
+}
 .form-add-poll form{
   width: auto;
   @include place-center;
   flex-direction: column;
 }
 .item-text{
-  font-size: 16px;
-  color: $main-color;
-  margin-bottom: 15px;
+  font-size: 18px;
+  color: $main-color;;
+  margin-bottom: 16px;
 }
 .textarea-basic{
   @extend .input-color-blue;
@@ -35,14 +39,15 @@
   flex-direction: column;
 }
 .button-answer{
+  @include button-basic;
+  @include size(90px, 25px);
   background-color: $main-color;
   color: $white;
-  @include size(90px, 25px);
-  border-radius: 5px;
-  cursor: pointer;
-  border: none;
   margin-bottom: 15px;
-  font-weight: bold;
+  border-radius: 20px;
+}
+.button-answer:hover{
+  background-color: $grey-disabled;
 }
 .block-answer p {
   margin-right: 5px;

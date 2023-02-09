@@ -42,7 +42,6 @@ export const ConfirmationPoll = (props) => {
                             return <p key={index} className="answer-modal">{index + 1 + ". " + answer}</p>
                         })}
                     </div>
-                    <hr className="line"/>
                     <div className="buttons-block-modal">
                         <button className="button-goBack" onClick={clickGoBack}>Змінити</button>
                         <button className="buttonSend" onClick={clickSendData}>Додати</button>

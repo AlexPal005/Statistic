@@ -8,8 +8,10 @@ import LogIn from "./components/LogIn/LogIn";
 import {Header} from "./components/header/Header";
 import {Confirmation} from "./components/Confirmation";
 import {Account} from "./pages/account/Account";
+import {AuthContext} from "./context/authContext";
 
 class App extends React.Component {
+    static contextType = AuthContext;
 
     constructor(props) {
         super(props);
@@ -23,12 +25,25 @@ class App extends React.Component {
                 <div className="content">
                     <Routes>
                         <Route path="/main" element={<Main/>}/>
-                        <Route path="/registration" element={<FormRegistration/>}/>
-                        <Route path="/LogIn" element={<LogIn/>}/>
-                        <Route path="/confirmation" element={<Confirmation/>}/>
-                        <Route path="/account/*" element={<Account/>}/>
                         <Route path="*" element={<Navigate to="/main" replace/>}/>
+                        <Route
+                            path="/registration"
+                            element={this.context.currentUser ? <Navigate replace to="/main"/> : <FormRegistration/>}
+                        />
+                        <Route
+                            path="/LogIn"
+                            element={this.context.currentUser ? <Navigate replace to="/main"/> : <LogIn/>}
+                        />
+                        <Route
+                            path="/confirmation"
+                            element={this.context.currentUser ? <Navigate replace to="/main"/> : <Confirmation/>}
+                        />
+                        <Route
+                            path="/account/*"
+                            element={!this.context.currentUser ? <Navigate replace to="/main"/> : <Account/>}
+                        />
                     </Routes>
+
                 </div>
                 <Footer/>
             </>
