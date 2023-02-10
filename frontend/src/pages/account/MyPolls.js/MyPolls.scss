@@ -12,11 +12,51 @@
   border: 1px solid $grey;
   padding: 15px;
   margin-bottom: 25px;
+  position: relative;
 }
 .card-question{
   font-size: 25px;
   color: $main-color;
+  font-weight: bold;
 }
+
 .card-answer{
-  font-size: 20px;
+  font-size: 18px;
+  width: 100%;
+  min-height: 30px;
+  border: 1px solid $line-value;
+  border-radius: 5px;
+  position: relative;
+  z-index: 100;
+}
+.line-value{
+  @include place-center;
+  height: 100%;
+  background: $line-value;
+  position: absolute;
+}
+.text-answer{
+  position: relative;
+  display: block;
+  font-weight: bold;
+  color: $text-answer;
+  padding-left: 10px;
+}
+.percentages-answer{
+  font-size: 14px;
+  color: $grey;
+  font-weight: normal;
+}
+.count-votes{
+  display: block;
+  margin-bottom: 7px;
+  color: $grey;
+}
+.remove-poll-icon{
+  @include size(25px, 25px);
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  color: $red-error;
+  cursor: pointer;
 }
