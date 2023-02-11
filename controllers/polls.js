@@ -17,9 +17,24 @@ export const getMyPolls = (req, res) => {
         if (err) {
             return res.json(err);
         }
-        if(!data.length){
+        if (!data.length) {
             return res.json('Ви ще не створили опитувань!');
         }
         return res.json(data);
+    });
+};
+
+export const deletePoll = (req, res) => {
+    const sqlRequest = "DELETE FROM polls WHERE id = ?";
+    dataBase.query(sqlRequest, req.body.id, (err, data) => {
+        if (err) {
+            return res.json(err);
+        }
+        if (data.length) {
+            return res.json('Успішно видалено!');
+        }
+        else{
+            return res.json('Помилка!');
+        }
     });
 };

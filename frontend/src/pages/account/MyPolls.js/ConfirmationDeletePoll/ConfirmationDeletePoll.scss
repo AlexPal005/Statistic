@@ -1,0 +1,34 @@
+@import "./src/components/modulesScss/variables";
+@import "../../NewPoll/ConformationPoll/ConfirmationPoll";
+.confirmation-window-deletePoll{
+  @extend .confirmation-window;
+  @include place-center;
+  justify-content: center;
+}
+.confirmation-question {
+  font-size: 22px;
+  color: $red-error;
+  font-weight: bold;
+}
+
+.buttons-block-modal-deletePoll {
+  @extend .buttons-block-modal;
+  width: 50%;
+}
+
+.button-goBack-deletePoll {
+  @extend .button-goBack;
+}
+
+.buttonSend-deletePoll {
+  @extend .buttonSend;
+  background: $red-error;
+}
+
+.buttonSend-deletePoll:hover {
+  background: $red-error-hover;
+}
+
+.button-confirm-delete {
+  @include size(130px, 35px);
+}

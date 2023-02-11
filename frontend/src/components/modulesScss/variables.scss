@@ -5,9 +5,10 @@ $grey: grey;
 $red-error: rgba(196, 2, 2, 0.76);
 $icon-color: rgba(236, 66, 62, 0.78);
 $green: #009a00;
-$hover_blue: rgba(35, 67, 157, 0.98);
+$hover_blue: rgba(35, 67, 157, 0.59);
 $green-hover: #018101;
 $line-value: rgba(236, 66, 62, 0.49);
+$red-error-hover: rgba(236, 66, 62, 0.71);
 $text-answer: rgb(122, 54, 112);
 
 
@@ -25,7 +26,7 @@ $text-answer: rgb(122, 54, 112);
   padding: 0 100px;
 }
 
-@mixin button-basic{
+@mixin button-basic {
   border: none;
   font-size: 18px;
   font-weight: 600;
