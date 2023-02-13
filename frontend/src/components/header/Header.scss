@@ -1,15 +1,14 @@
 @import "../modulesScss/variables";
 
 .header {
-  box-shadow: 0px 16px 20px -9px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 0px 15px 1px rgba(0,0,0,0.2);
   @include place-center;
   @include all-padding;
   @include size(100%, 70px);
   position: relative;
   justify-content: space-between;
-  background-color: rgba(42, 134, 168, 0.08);
-
 }
+
 .logo-link {
   @include place-center;
   text-decoration: none;
@@ -17,25 +16,44 @@
 }
 
 .header__logo img {
-  @include size(50px, 45px);
+  @include size(55px, 55px);
 }
 
 .header__logo p {
   font-size: 30px;
-  margin-left: 10px;
-  color: $main-color;
-}
-.header__login-register button {
-  @include button-basic;
-  background-color: initial;
-  color: $main-color;
-  border-radius: 20px;
-  padding: 10px;
+  color: $main-dark;
+  padding-top: 8px;
 }
 
-.header__login-register button:hover{
-  text-decoration: underline;
+.header__login-register button {
+  padding: 13px 25px;
 }
+
+.button-sign-up {
+  @include button-basic;
+  background: $main-dark;
+  color: $white;
+  border: none;
+}
+
+.button-sign-up:hover {
+  background: $white;
+  color: $main-dark;
+  border: 1px solid $border-grey;
+}
+
+.button-log-in, .button-log-out {
+  @include button-basic;
+  color: $main-dark;
+  border: 1px solid $border-grey;
+  margin-left: 30px;
+}
+
+.button-log-in:hover, .button-log-out:hover {
+  background: $main-dark;
+  color: $white;
+}
+
 .header__menu {
   display: flex;
 }
@@ -44,15 +62,20 @@
   text-decoration: none;
   margin-right: 30px;
 }
-.header__login-register{
+
+.header__login-register {
   display: flex;
 }
-.header__login-register button:active {
-  background-color: $grey-disabled;
-}
+
 .mobile-button {
   display: none;
 }
+
+.side-bar__links-menu > .nick-name{
+  font-weight: 600;
+  color: $main-blue;
+}
+
 @media screen and (max-width: 768px) {
   .header {
     padding: 0 10px;
@@ -76,7 +99,7 @@
   .header__menu a {
     margin-top: 20px;
   }
-  .header .header__login-register{
+  .header .header__login-register {
     display: none;
   }
 }
@@ -85,7 +108,7 @@
   .header {
     padding: 0 20px;
   }
-  .header__menu a{
+  .header__menu a {
     margin-right: 15px;
   }
 }

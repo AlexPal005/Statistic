@@ -1,12 +1,11 @@
 @import "../modulesScss/variables";
 
 .footer {
-  background-color: rgba(42, 134, 168, 0.08);
-  box-shadow: 0 -16px 20px -9px rgba(0, 0, 0, 0.1);
   @include place-center;
   justify-content: space-between;
   height: 70px;
   @include all-padding;
+  box-shadow: 0px 0px 15px 1px rgba(0,0,0,0.2);
 }
 
 .footer .header__logo img {
@@ -15,6 +14,7 @@
 
 .footer .header__logo p {
   font-size: 20px;
+  padding-top: 4px;
 }
 
 .footer__social-networks {

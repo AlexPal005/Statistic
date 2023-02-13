@@ -26,8 +26,8 @@
 }
 
 .input-color-blue:focus {
-  box-shadow: 0 0 10px -2px $main-color;
-  border: 1px solid $main-color;
+  box-shadow: 0 0 10px -2px $main-blue;
+  border: 1px solid $main-blue;
   outline: none;
 }
 
@@ -59,7 +59,7 @@
   margin-top: 25px;
   background-color: $green;
   color: $white;
-  border-radius: 20px;
+  border: none;
 }
 
 .button-form:hover {

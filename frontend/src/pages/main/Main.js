@@ -5,7 +5,7 @@ const Main = ()=>{
     return(
         <div className="wrapper-content">
             <SideBar></SideBar>
-            <div>Контент</div>
+            <div></div>
         </div>
     );
 };

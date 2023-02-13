@@ -1,0 +1,12 @@
+@import "src/components/modulesScss/variables";
+.list-item-pagination{
+  display:inline;
+  text-decoration: none;
+  padding: 5px;
+}
+.pagination-list{
+  list-style-type: none;
+  margin-bottom: 20px;
+  cursor: pointer;
+  color: $main-blue;
+}

@@ -1,16 +1,19 @@
 $white: white;
-$main-color: rgba(35, 67, 157, 0.89);
+$main-dark: #021412;
+$border-grey: #D4D4D8;
+$icon-color: #021412;
+$red-error: rgba(196, 2, 2, 0.76);
+$red-error-hover: rgba(236, 66, 62, 0.71);
+$line-value: rgba(231, 161, 105, 0.47);
+$text-answer: rgba(68, 25, 143, 0.89);
+$main-blue: rgba(5, 32, 134, 0.82);
+$hover_blue: rgb(3, 26, 110);
 $grey-disabled: #d3d3d3;
 $grey: grey;
-$red-error: rgba(196, 2, 2, 0.76);
-$icon-color: rgba(236, 66, 62, 0.78);
 $green: #009a00;
-$hover_blue: rgba(35, 67, 157, 0.59);
-$green-hover: #018101;
-$line-value: rgba(236, 66, 62, 0.49);
-$red-error-hover: rgba(236, 66, 62, 0.71);
-$text-answer: rgb(122, 54, 112);
+$green-hover: #016e01;
 
+///////////////////////////////////////////
 
 @mixin size($width, $height) {
   width: $width;
@@ -27,10 +30,8 @@ $text-answer: rgb(122, 54, 112);
 }
 
 @mixin button-basic {
-  border: none;
-  font-size: 18px;
-  font-weight: 600;
+  font-size: 16px;
   cursor: pointer;
-  letter-spacing: 1px;
-  transition: ease-out 0.2s;
+  transition: ease-out 0.3s;
+  border-radius: 10px;
 }

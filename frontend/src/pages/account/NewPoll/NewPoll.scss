@@ -15,7 +15,7 @@
 }
 .item-text{
   font-size: 18px;
-  color: $main-color;;
+  color: $main-dark;;
   margin-bottom: 16px;
 }
 .textarea-basic{
@@ -41,13 +41,14 @@
 .button-answer{
   @include button-basic;
   @include size(90px, 25px);
-  background-color: $main-color;
+  background-color: $main-blue;
   color: $white;
   margin-bottom: 15px;
   border-radius: 20px;
+  border: none;
 }
 .button-answer:hover{
-  background-color: $grey-disabled;
+  background-color: $hover_blue;
 }
 .block-answer p {
   margin-right: 5px;

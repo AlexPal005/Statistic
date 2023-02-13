@@ -11,10 +11,10 @@ export const ButtonAuth = () => {
                 <LogOut></LogOut> :
                 <>
                     <Link to="/registration">
-                        <button>Реєстрація</button>
+                        <button className="button-sign-up">Реєстрація</button>
                     </Link>
                     <Link to="/LogIn">
-                        <button>Увійти</button>
+                        <button className="button-log-in">Увійти</button>
                     </Link>
                 </>
             }

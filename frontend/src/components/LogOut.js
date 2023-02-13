@@ -8,11 +8,11 @@ export const LogOut = () => {
     const {currentUser, logOut} = useContext(AuthContext);
     return (
         <>
-            <Link to ="/account/my-polls" className="side-bar__links-menu side-bar-account text-logout">
+            <Link to="/account/my-polls" className="side-bar__links-menu side-bar-account">
                 <MdOutlineAccountCircle className="icon-account"/>
-                <span>{currentUser?.nick_name}</span>
+                <span className="nick-name">{currentUser?.nick_name}</span>
             </Link>
-            <button type="submit" onClick={logOut}>Вийти</button>
+            <button type="submit" onClick={logOut} className="button-log-out">Вийти</button>
         </>
     );
 };

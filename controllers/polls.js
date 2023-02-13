@@ -12,15 +12,20 @@ export const addPoll = (req, res) => {
     });
 };
 export const getMyPolls = (req, res) => {
-    const sqlRequest = "SELECT * FROM polls WHERE user_id = ?";
-    dataBase.query(sqlRequest, req.body.userId, (err, data) => {
+    const sqlRequest = "SELECT polls.id, polls.question, polls.answers, polls.user_id, polls.results, topics.name, polls.count_votes\n" +
+        "FROM polls INNER JOIN topics on polls.topic_id = topics.id AND user_id = ?;";
+    const userId = req.query.userId;
+    dataBase.query(sqlRequest, userId, (err, data) => {
         if (err) {
             return res.json(err);
         }
         if (!data.length) {
             return res.json('Ви ще не створили опитувань!');
         }
-        return res.json(data);
+        const firstPollIndex = req.query.firstPollIndex;
+        const lastPollIndex = req.query.lastPollIndex;
+        const polls = data.slice(firstPollIndex, lastPollIndex);
+        return res.json(polls);
     });
 };
 
@@ -32,9 +37,19 @@ export const deletePoll = (req, res) => {
         }
         if (data.length) {
             return res.json('Успішно видалено!');
-        }
-        else{
+        } else {
             return res.json('Помилка!');
         }
+    });
+};
+
+// get the count of polls
+export const getCountPolls = (req, res) => {
+    const sqlRequest = "SELECT COUNT(*) as countPolls FROM polls;";
+    dataBase.query(sqlRequest, (err, data) => {
+        if (err) {
+            return res.json(err);
+        }
+        return res.json(data);
     });
 };

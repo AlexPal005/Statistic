@@ -1,11 +1,14 @@
 @import "./src/components/modulesScss/variables";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Noto Sans', sans-serif;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
 }
+
 .content {
   min-height: calc(100vh - 140px);
   margin: 0 100px;

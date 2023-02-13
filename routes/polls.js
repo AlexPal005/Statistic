@@ -1,9 +1,10 @@
 import express from 'express';
-import {addPoll, deletePoll, getMyPolls} from "../controllers/polls.js";
+import {addPoll, deletePoll, getCountPolls, getMyPolls} from "../controllers/polls.js";
 
 const router = express.Router();
 router.post('/addPoll', addPoll);
-router.post('/getMyPolls', getMyPolls);
+router.get('/getMyPolls', getMyPolls);
 router.post('/deletePoll', deletePoll);
+router.get('/getCountPolls', getCountPolls);
 
 export default router;

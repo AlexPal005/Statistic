@@ -9,6 +9,7 @@
   height: 100%;
   z-index: 100;
 }
+
 .confirmation-window {
   width: 600px;
   min-height: 250px;
@@ -30,7 +31,7 @@
   margin-top: 15px;
   font-size: 22px;
   margin-bottom: 15px;
-  color: $main-color;
+  color: $main-dark;
 }
 
 .modal-content {
@@ -45,7 +46,7 @@
 .question-modal {
   font-size: 25px;
   font-weight: bold;
-  color: $main-color;
+  color: $main-blue;
 }
 
 .buttons-block-modal {
@@ -60,10 +61,11 @@
 .button-goBack {
   @include button-basic;
   @include size(100px, 35px);
-  background-color: $main-color;
+  background-color: $main-blue;
   color: white;
   border-radius: 20px;
   font-weight: normal;
+  border: none;
 }
 
 .button-goBack:hover {
@@ -77,6 +79,7 @@
   color: white;
   border-radius: 20px;
   font-weight: normal;
+  border: none;
 }
 
 .buttonSend:hover {
