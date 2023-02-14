@@ -5,6 +5,7 @@ import {AuthContext} from "../../../context/authContext";
 import {MdDeleteForever} from "react-icons/md";
 import {ConfirmationDeletePoll} from "./ConfirmationDeletePoll/ConfirmationDeletePoll";
 import {Pagination} from "../../../components/Pagination/Pagination";
+import {Preloader} from "../../../components/Preloader/Preloader";
 
 const Card = ({poll, answers, percentagesPoll, pollId, handleShowConfirmDelete}) => {
     return (
@@ -51,6 +52,7 @@ export const MyPolls = () => {
     const [countPollsOnPage] = useState(5);
     const [currentPage, setCurrentPage] = useState(1);
     const [currentPolls, setCurrentPolls] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     //change the number of page
     const paginate = pageNumber => setCurrentPage(pageNumber);
@@ -58,6 +60,7 @@ export const MyPolls = () => {
     useEffect(() => {
         // get the current array of polls
         const getCurrentPolls = async () => {
+            setIsLoading(true);
             console.log("getCurrentPolls");
             const lastPollIndex = currentPage * countPollsOnPage;
             const firstPollIndex = lastPollIndex - countPollsOnPage;
@@ -73,6 +76,7 @@ export const MyPolls = () => {
                 .then(response => {
                     setCurrentPolls(response.data);
                 });
+            setIsLoading(false);
         };
         getCurrentPolls().catch(console.error);
     }, [currentPage, countPollsOnPage, currentUser.currentUser.id, countPolls]);
@@ -104,35 +108,58 @@ export const MyPolls = () => {
         }
         getCountPolls().catch(console.error);
         closeModal();
+        setCurrentPage(prev => prev - 1);
     };
     // close confirmation window
     const closeModal = () => {
         setIsClickedDelete(prev => !prev);
     };
+    // prev page
+    const prev = () => {
+        if (currentPage > 1) {
+            setCurrentPage(prev => prev - 1);
+        }
+    };
+
+    //next page
+    const next = () => {
+        if (currentPage < countPolls / countPollsOnPage) {
+            setCurrentPage(prev => prev + 1);
+        }
+    };
     return (
         <div className="content-my-polls">
-            {currentPolls.map((poll) => {
-                const answers = poll.answers.split("#");
-                answers.length = answers.length - 1;
-                const percentagesPoll = poll.results.split("#");
-                percentagesPoll.length = percentagesPoll.length - 1;
-                return (
-                    <Card
-                        key={poll.id}
-                        pollId={poll.id}
-                        poll={poll}
-                        handleShowConfirmDelete={handleShowConfirmDelete}
-                        answers={answers}
-                        percentagesPoll={percentagesPoll}
+            {isLoading ? <Preloader/> :
+                <>
+                    {
+                        currentPolls.map((poll) => {
+                            const answers = poll.answers.split("#");
+                            answers.length = answers.length - 1;
+                            const percentagesPoll = poll.results.split("#");
+                            percentagesPoll.length = percentagesPoll.length - 1;
+                            return (
+                                <Card
+                                    key={poll.id}
+                                    pollId={poll.id}
+                                    poll={poll}
+                                    handleShowConfirmDelete={handleShowConfirmDelete}
+                                    answers={answers}
+                                    percentagesPoll={percentagesPoll}
+                                />
+                            );
+                        })
+                    }
+                    <Pagination
+                        countPolls={countPolls}
+                        countPollsOnPage={countPollsOnPage}
+                        paginate={paginate}
+                        next={next}
+                        prev={prev}
+                        currentPage={currentPage}
                     />
-                );
-            })}
-            <Pagination
-                countPolls={countPolls}
-                countPollsOnPage={countPollsOnPage}
-                paginate={paginate}
-            />
-            {isClickedDelete && <ConfirmationDeletePoll closeModal={closeModal} deletePoll={handleDeletePoll}/>}
+                    {isClickedDelete && <ConfirmationDeletePoll closeModal={closeModal} deletePoll={handleDeletePoll}/>}
+                </>
+            }
         </div>
     );
 }

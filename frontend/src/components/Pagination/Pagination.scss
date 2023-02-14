@@ -1,12 +1,38 @@
 @import "src/components/modulesScss/variables";
-.list-item-pagination{
-  display:inline;
-  text-decoration: none;
-  padding: 5px;
-}
-.pagination-list{
-  list-style-type: none;
+
+.pagination-block {
+  margin-top: auto;
+  display: inline-flex;
+  align-items: center;
   margin-bottom: 20px;
+}
+
+.pagination-btn {
   cursor: pointer;
+}
+
+.list-item-pagination {
+  @include size(30px, 30px);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  border: 1px solid $main-blue;
+  margin-right: 10px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.pagination-list {
+  list-style-type: none;
+  cursor: pointer;
+}
+
+.list-item-not-active {
   color: $main-blue;
+}
+
+.list-item-active, .list-item-pagination:hover {
+  background-color: $main-blue;
+  color: white;
 }
