@@ -1,9 +1,8 @@
 @import "./src/components/modulesScss/variables";
 .content-my-polls{
   width: 100%;
-  display: flex;
+  @include place-center;
   flex-direction: column;
-  align-items: center;
   padding-top: 30px;
   position: relative;
 }

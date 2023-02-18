@@ -44,7 +44,7 @@ export const confirmation = (req, res) => {
             });
             const options = {
                 from: "StatisticsCom@ukr.net",
-                to: "rudenkosanya06@gmail.com",
+                to: req.body.email,
                 subject: "Підтвердження реєстрації Statistics",
                 html: `<h1 style = "color: rgb(41, 159, 215)">Statistics</h1> 
         <h3>${req.body.nickName.toUpperCase()}, для того, щоб підтвердити реєстрацію уведіть в поле даний код: </h3> 

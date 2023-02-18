@@ -20,8 +20,8 @@
 }
 
 .header__logo p {
-  font-size: 30px;
-  color: $main-dark;
+  font-size: 36px;
+  color: $icon-color;
   padding-top: 8px;
 }
 
@@ -31,26 +31,26 @@
 
 .button-sign-up {
   @include button-basic;
-  background: $main-dark;
+  background: $icon-color;
   color: $white;
   border: none;
 }
 
 .button-sign-up:hover {
   background: $white;
-  color: $main-dark;
+  color: $icon-color;
   border: 1px solid $border-grey;
 }
 
 .button-log-in, .button-log-out {
   @include button-basic;
-  color: $main-dark;
+  color: $icon-color;
   border: 1px solid $border-grey;
   margin-left: 30px;
 }
 
 .button-log-in:hover, .button-log-out:hover {
-  background: $main-dark;
+  background: $icon-color;
   color: $white;
 }
 

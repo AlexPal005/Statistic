@@ -1,11 +1,18 @@
 import React from "react";
-import "./main.scss";
+import "./Main.scss";
 import {SideBar} from "../../components/SideBar/SideBar";
-const Main = ()=>{
-    return(
+import {Route, Routes} from "react-router-dom";
+import {MainPolls} from "./MainPolls/MainPolls";
+
+const Main = () => {
+    return (
         <div className="wrapper-content">
-            <SideBar></SideBar>
-            <div></div>
+            <SideBar/>
+            <Routes>
+                <Route path="/polls/">
+                    <Route path=":topicId" element={<MainPolls/>}/>
+                </Route>
+            </Routes>
         </div>
     );
 };

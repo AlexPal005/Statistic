@@ -1,5 +1,5 @@
 import "./MyPolls.scss";
-import {useContext, useEffect, useState} from "react";
+import {useCallback, useContext, useEffect, useState} from "react";
 import axios from "axios";
 import {AuthContext} from "../../../context/authContext";
 import {MdDeleteForever} from "react-icons/md";
@@ -57,11 +57,9 @@ export const MyPolls = () => {
     //change the number of page
     const paginate = pageNumber => setCurrentPage(pageNumber);
 
-    useEffect(() => {
-        // get the current array of polls
-        const getCurrentPolls = async () => {
+    // get the current array of polls
+    const getCurrentPolls = useCallback(async () => {
             setIsLoading(true);
-            console.log("getCurrentPolls");
             const lastPollIndex = currentPage * countPollsOnPage;
             const firstPollIndex = lastPollIndex - countPollsOnPage;
 
@@ -77,21 +75,29 @@ export const MyPolls = () => {
                     setCurrentPolls(response.data);
                 });
             setIsLoading(false);
-        };
-        getCurrentPolls().catch(console.error);
-    }, [currentPage, countPollsOnPage, currentUser.currentUser.id, countPolls]);
+        },
+        [countPollsOnPage, currentPage, currentUser.currentUser.id],
+    );
 
     // get the count of polls
-    const getCountPolls = async () => {
-        console.log("getCountPolls");
-        await axios.get("/polls/getCountPolls")
+    const getCountPolls = useCallback(async () => {
+        await axios.get("/polls/getCountPolls", {params: {userId: currentUser.currentUser.id}})
             .then(response => {
                 setCountPolls(response.data[0].countPolls);
             });
-    };
-    useEffect(() => {
-        getCountPolls().catch(console.error);
     }, []);
+
+    // get count polls and get polls from bd
+    const getData = useCallback(() => {
+        getCountPolls()
+            .then(() => {
+                getCurrentPolls().catch(console.error);
+            }).catch(console.error);
+    }, [getCountPolls, getCurrentPolls]);
+
+    useEffect(() => {
+        getData();
+    }, [getData]);
 
 
     //show confirmation to delete
@@ -106,9 +112,11 @@ export const MyPolls = () => {
         } catch (e) {
             console.log(e);
         }
-        getCountPolls().catch(console.error);
         closeModal();
-        setCurrentPage(prev => prev - 1);
+        if (countPolls % countPollsOnPage === 1) {
+            setCurrentPage(prev => prev - 1);
+        }
+        getData();
     };
     // close confirmation window
     const closeModal = () => {

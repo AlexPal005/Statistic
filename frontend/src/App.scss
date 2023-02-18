@@ -11,7 +11,7 @@
 
 .content {
   min-height: calc(100vh - 140px);
-  margin: 0 100px;
+  @include all-padding;
 }
 
 .error {
@@ -24,5 +24,10 @@
   .content {
     padding: 0 15px;
     min-height: calc(100vh - 200px);
+  }
+}
+@media screen and (min-width: 769px) and (max-width: 1200px) {
+  .content {
+    padding: 0 20px;
   }
 }

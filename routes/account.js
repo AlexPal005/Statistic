@@ -1,5 +1,5 @@
 import express from 'express';
-import {addPoll, deletePoll, getCountPolls, getMyPolls} from "../controllers/polls.js";
+import {addPoll, deletePoll, getCountPolls, getMyPolls} from "../controllers/account.js";
 
 const router = express.Router();
 router.post('/addPoll', addPoll);

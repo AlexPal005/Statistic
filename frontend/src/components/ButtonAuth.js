@@ -1,6 +1,6 @@
 import {Link} from "react-router-dom";
 import React, {useContext} from "react";
-import {LogOut} from "./LogOut";
+import {LogOut} from "./LogOut/LogOut";
 import {AuthContext} from "../context/authContext";
 
 export const ButtonAuth = () => {

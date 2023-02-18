@@ -1,7 +1,7 @@
 import express from 'express';
 import mainRoutes from './routes/main.js';
 import authRoutes from './routes/auth.js';
-import pollsRoutes from './routes/polls.js';
+import pollsRoutes from './routes/account.js';
 import cookieParser from 'cookie-parser';
 
 const app = express();

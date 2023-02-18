@@ -24,7 +24,7 @@ class App extends React.Component {
                 <Header/>
                 <div className="content">
                     <Routes>
-                        <Route path="/main" element={<Main/>}/>
+                        <Route path="/main/*" element={<Main/>}/>
                         <Route path="*" element={<Navigate to="/main" replace/>}/>
                         <Route
                             path="/registration"

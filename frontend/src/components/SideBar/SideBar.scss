@@ -1,20 +1,31 @@
 @import "../modulesScss/variables";
 
 .side-bar{
-    width: 300px;
+    width: 270px;
     padding-top: 15px;
     display: flex;
     flex-direction: column;
     border-right: 1px solid $grey-disabled;
     min-height: calc(100vh - 140px);
 }
-.side-bar__links-menu{
+.side-bar__links-menu-item{
     text-decoration: none;
-    font-size: 16px;
-    font-weight: bold;
+    font-size: 17px;
     color: $main-dark;
     cursor: pointer;
 }
-.side-bar__links-menu:hover{
+.side-bar__links-menu-item > span{
+    font-weight: 600;
+    padding-top: 2px;
+}
+.side-bar__links-menu-item:hover{
+    text-decoration: underline;
+}
+.side-bar__links-menu-item-main{
+    margin-top: 5px;
+    @include place-center;
+}
+.side-bar__links-menu-item-main.active{
+    color: $icon-color;
     text-decoration: underline;
 }

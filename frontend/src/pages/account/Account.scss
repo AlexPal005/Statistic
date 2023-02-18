@@ -1,19 +1,24 @@
 @import "./src/components/modulesScss/variables";
-.content-account-page{
-    display: flex;
+
+.content-account-page {
+  display: flex;
 }
-.icon-menu{
-    @include size(30px, 30px);
+
+.icon-menu {
+  @include size(30px, 30px);
+  color: $icon-color;
+  margin-right: 5px;
+}
+.side-bar-account-item {
+  @include place-center;
+}
+
+.side-bar-margin {
+  margin-top: 4px;
+}
+.side-bar{
+  a.active{
+    background: $grey-disabled;
     color: $icon-color;
-    margin-right: 5px;
-}
-.active-link{
-    color: $icon-color;
-    text-decoration: underline;
-}
-.side-bar-account{
-    @include place-center;
-}
-.side-bar-margin{
-    margin-top: 4px;
+  }
 }
