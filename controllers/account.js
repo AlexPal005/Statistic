@@ -12,7 +12,7 @@ export const addPoll = (req, res) => {
     });
 };
 export const getMyPolls = (req, res) => {
-    const sqlRequest = "SELECT polls.id, polls.question, polls.answers, polls.user_id, polls.results, topics.name, polls.count_votes\n" +
+    const sqlRequest = "SELECT polls.poll_id, polls.question, polls.answers, polls.user_id, polls.results, topics.name, polls.count_votes\n" +
         "FROM polls INNER JOIN topics on polls.topic_id = topics.id AND user_id = ?;";
     const userId = req.query.userId;
     dataBase.query(sqlRequest, userId, (err, data) => {
@@ -30,7 +30,7 @@ export const getMyPolls = (req, res) => {
 };
 
 export const deletePoll = (req, res) => {
-    const sqlRequest = "DELETE FROM polls WHERE id = ?";
+    const sqlRequest = "DELETE FROM polls WHERE poll_id = ?";
     dataBase.query(sqlRequest, req.body.id, (err, data) => {
         if (err) {
             return res.json(err);

@@ -17,7 +17,7 @@ export const getTopics = (req, res) => {
 // get polls from bd
 export const getPolls = (req, res) => {
     const sqlRequest =
-        "SELECT question, answers, name, nick_name, results, count_votes\n" +
+        "SELECT question, answers, name, nick_name, results, count_votes, poll_id\n" +
         "FROM polls INNER JOIN user ON polls.user_id = user.id\n" +
         "INNER JOIN topics ON polls.topic_id = topics.id\n" +
         "WHERE topic_id = ?;";
@@ -33,6 +33,7 @@ export const getPolls = (req, res) => {
         const firstPollIndex = req.query.firstPollIndex;
         const lastPollIndex = req.query.lastPollIndex;
         const polls = data.slice(firstPollIndex, lastPollIndex);
+        console.log(polls);
         return res.json(polls);
     });
 };

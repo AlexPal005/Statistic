@@ -6,7 +6,7 @@ import {MdOutlinePassword} from "react-icons/md";
 import {IoMdReturnRight} from "react-icons/io";
 import {GoChecklist} from "react-icons/go";
 import {NavLink, Route, Routes} from "react-router-dom";
-import {MyPolls} from "./MyPolls.js/MyPolls";
+import {MyPolls} from "./MyPolls/MyPolls";
 
 export const Account = () => {
 

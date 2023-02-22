@@ -29,6 +29,7 @@ const Card = ({poll, answers, percentagesPoll}) => {
                     </div>
                 );
             })}
+
         </div>
     );
 };
@@ -59,7 +60,7 @@ export const MainPolls = () => {
                 });
         } catch (e) {
             setCurrentPolls([]);
-            console.error(e, 34);
+            console.error(e);
         }
         setIsLoading(false);
     }, [topicId, countPollsOnPage, currentPage],);
@@ -120,7 +121,7 @@ export const MainPolls = () => {
                                 percentagesPoll.length = percentagesPoll.length - 1;
                                 return (
                                     <Card
-                                        key={poll.id}
+                                        key={poll.poll_id}
                                         poll={poll}
                                         answers={answers}
                                         percentagesPoll={percentagesPoll}

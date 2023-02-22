@@ -21,11 +21,10 @@
   margin-right: 10px;
   border-radius: 20px;
   font-weight: 600;
+  cursor: pointer;
 }
-
 .pagination-list {
   list-style-type: none;
-  cursor: pointer;
 }
 
 .list-item-not-active {
@@ -35,4 +34,8 @@
 .list-item-active, .list-item-pagination:hover {
   background-color: $main-blue;
   color: white;
+}
+.three-dots{
+  display: inline-flex;
+  margin-right: 10px;
 }
