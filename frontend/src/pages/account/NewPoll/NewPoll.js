@@ -1,5 +1,5 @@
 import "./NewPoll.scss";
-import React, {useContext, useEffect, useRef, useState} from "react";
+import React, {useCallback, useContext, useEffect, useRef, useState} from "react";
 import axios from "axios";
 import {AuthContext} from "../../../context/authContext";
 import {AnswerTextarea} from "./AnswerTextarea";
@@ -7,23 +7,10 @@ import {ConfirmationPoll} from "./ConformationPoll/ConfirmationPoll";
 import {ModalWindowNotification} from "../../../components/ModalWindowNotification/ModalWindowNotification";
 
 export const NewPoll = () => {
+
     //topics from db
     const [topics, setTopics] = useState(null);
-    //textarea answers
-    const [answers, setAnswers] = useState([
-        <AnswerTextarea
-            key={1}
-            id={0}
-            changeAnswers={changeAnswers}
-            getErrorAnswer={getErrorAnswer}
-        />,
-        <AnswerTextarea
-            key={2}
-            id={1}
-            changeAnswers={changeAnswers}
-            getErrorAnswer={getErrorAnswer}
-        />
-    ]);
+
     const currentUser = useContext(AuthContext);
 
     //data from fields
@@ -60,6 +47,7 @@ export const NewPoll = () => {
     const [answersError, setAnswersError] = useState("Помилка");
     const [isValid, setIsValid] = useState(false);
 
+
     // is valid all
     useEffect(() => {
 
@@ -73,33 +61,15 @@ export const NewPoll = () => {
 
     // set error answers
     useEffect(() => {
-        let countErrors = 0;
         let error = "";
         answersData.forEach((answer) => {
             if (answer.error) {
-                countErrors++;
                 error = answer.error;
             }
         });
-        if (countErrors) {
-            setAnswersError(error);
-        } else {
-            setAnswersError("");
-        }
-    }, [answersData, answers]);
+        setAnswersError(error);
 
-    function getErrorAnswer(id, errorAnswer) {
-        setAnswersData(prevState =>
-            prevState.map(item => {
-                if (item.id === id) {
-                    return {...item, error: errorAnswer};
-                } else {
-                    return item;
-                }
-            })
-        )
-    }
-
+    }, [answersData]);
 
     const handleBlurQuestion = () => {
         setQuestionDirty(true);
@@ -119,6 +89,19 @@ export const NewPoll = () => {
             setQuestionError("Запитання не може бути пустим!");
         }
     };
+
+    // get an error from the answer
+    const getErrorAnswer = useCallback((id, errorAnswer) => {
+        setAnswersData(prevState =>
+            prevState.map(item => {
+                if (item.id === id) {
+                    return {...item, error: errorAnswer};
+                } else {
+                    return item;
+                }
+            })
+        )
+    }, []);
 
     // get answers
     function changeAnswers(id, event) {
@@ -149,29 +132,18 @@ export const NewPoll = () => {
     const handleAddAnswer = (e) => {
         e.preventDefault();
         setAnswersData(prev => [...prev, {
-            id: answers.length,
+            id: answersData.length,
             answer: "",
             error: "Відповіді не можуть бути пустими",
             e: null
         }])
-        setAnswers(prev => {
-            return (
-                [...prev,
-                    <AnswerTextarea
-                        key={prev.length + 1}
-                        id={prev.length}
-                        changeAnswers={changeAnswers}
-                        getErrorAnswer={getErrorAnswer}
-                    />
-                ]);
-        });
+
     };
 
     // delete the component textarea
     const handleDeleteAnswer = (e) => {
         e.preventDefault();
-        if (answers.length > 2) {
-            setAnswers(prev => prev.slice(0, prev.length - 1));
+        if (answersData.length > 2) {
             setAnswersData(prev => prev.slice(0, prev.length - 1));
         }
     }
@@ -201,19 +173,29 @@ export const NewPoll = () => {
     }
     ///////////////////////////////////////////////////////////////////////////////////
     // clean up the form
+
+    // ref to the question textarea
     const refQuestion = useRef(null);
+
+    //trigger to change the value if the button was pressed
+    const [isClicked, setIsClicked] = useState(false);
+
     const clean = () => {
-        answersData.forEach((answer) => {
-            answer.e.target.value = '';
+        setAnswersData(prev => {
+            const newData = prev.slice(0, 2);
+            newData.forEach((answer) => {
+                answer.error = "Відповіді не можуть бути пустими";
+                answer.e.target.value = '';
+                answer.answer = '';
+            });
+            return newData;
         });
         refQuestion.current.value = '';
-        answersData.length = 2;
-        answers.length = 2;
         setQuestionDirty(false);
         setQuestionError("Запитання не може бути пустим!");
-        setAnswersError("Помилка");
-
+        setIsClicked(prev => !prev);
     };
+
     ///////////////////////////////////////////////////////////////////////////////////
     // show result window
     const [isSendBD, setIsSendBD] = useState(false);
@@ -241,7 +223,19 @@ export const NewPoll = () => {
                     <p className="item-text">Додайте відповіді для опитування (мінімум 2)<br/>
                         Кожне питання записуйте в окремому вікні!</p>
                     <div className="answers">
-                        {answers}
+                        {
+                            answersData.map(answer => {
+                                return (
+                                    <AnswerTextarea
+                                        key={answer.id}
+                                        id={answer.id}
+                                        changeAnswers={changeAnswers}
+                                        getErrorAnswer={getErrorAnswer}
+                                        isClicked={isClicked}
+                                    />
+                                );
+                            })
+                        }
                     </div>
                     <div className="buttons-answer">
                         <button className="button-answer" onClick={handleAddAnswer}>+</button>

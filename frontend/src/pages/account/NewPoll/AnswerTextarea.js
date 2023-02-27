@@ -1,12 +1,19 @@
 import React, {useEffect, useState} from "react";
 
-export const AnswerTextarea = (props) => {
+export const AnswerTextarea = ({getErrorAnswer, changeAnswers, id, isClicked}) => {
     const [answerDirty, setAnswerDirty] = useState(false);
     const [errorAnswer, setErrorAnswer] = useState("Відповіді не можуть бути пустими!");
 
+    // initial values
     useEffect(() => {
-        props.getErrorAnswer(props.id, errorAnswer);
-    }, [errorAnswer]);
+        setErrorAnswer("Відповіді не можуть бути пустими!");
+        setAnswerDirty(false);
+        console.log(isClicked)
+    }, [isClicked]);
+
+    useEffect(() => {
+        getErrorAnswer(id, errorAnswer);
+    }, [errorAnswer, getErrorAnswer, id]);
 
     const handleChange = (event) => {
         if (event.target.value.length) {
@@ -14,11 +21,12 @@ export const AnswerTextarea = (props) => {
         } else {
             setErrorAnswer("Відповіді не можуть бути пустими!");
         }
-        props.changeAnswers(props.id, event);
+        changeAnswers(id, event);
     };
     const handleBlur = () => {
         setAnswerDirty(true);
     }
+
     return (
         <div className="block-answer">
             {(answerDirty && errorAnswer) && <p className="error">{errorAnswer}</p>}
@@ -26,9 +34,8 @@ export const AnswerTextarea = (props) => {
                 className={(answerDirty && errorAnswer) ? ["textarea-answer", "error-input"].join(" ") : "textarea-answer"}
                 onChange={handleChange}
                 onBlur={handleBlur}
-                placeholder={props.id + 1 + "."}
-            >
-            </textarea>
+                placeholder={id + 1 + "."}
+            />
         </div>
     );
 }

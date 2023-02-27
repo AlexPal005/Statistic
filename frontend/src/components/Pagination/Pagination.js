@@ -6,6 +6,9 @@ export const Pagination = ({countPolls, countPollsOnPage, paginate, prev, next, 
     const [pageNumbers, setPageNumbers] = useState([]);
     const [variant, setVariant] = useState(1);
 
+    // count of pages
+    const countPages = Math.ceil(countPolls / countPollsOnPage);
+
     const addNumber = (number) => {
         setPageNumbers(prev => {
             let newNumbers = prev.slice(0);
@@ -18,8 +21,6 @@ export const Pagination = ({countPolls, countPollsOnPage, paginate, prev, next, 
         // clear an array of page numbers
         setPageNumbers([]);
 
-        // count of pages
-        const countPages = Math.ceil(countPolls / countPollsOnPage);
         if (countPages > 7) {
             if (currentPage >= 1 && currentPage < 7) {
                 for (let i = 1; i <= 7; i++) {
@@ -45,14 +46,11 @@ export const Pagination = ({countPolls, countPollsOnPage, paginate, prev, next, 
                 addNumber(i + 1);
             }
         }
-    }, [countPolls, countPollsOnPage, currentPage]);
+    }, [currentPage, countPages]);
 
     useEffect(() => {
         generatePageNumbers();
     }, [generatePageNumbers]);
-    useEffect(() => {
-        console.log(pageNumbers);
-    }, [pageNumbers, currentPage]);
 
     return (
         <div className="pagination-block">
@@ -79,6 +77,7 @@ export const Pagination = ({countPolls, countPollsOnPage, paginate, prev, next, 
 
                         </li>
                         {
+                            countPages > 8 &&
                             (variant === 1 && number === 7) ?
                                 <li className="three-dots">...</li> :
                                 (variant === 3 && (number === 1 || number === pageNumbers[pageNumbers.length - 2])) ?
