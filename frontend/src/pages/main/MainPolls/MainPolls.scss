@@ -1,0 +1,28 @@
+@import "./src/components/modulesScss/variables";
+
+.vote-checkbox-block {
+  @include place-center;
+  margin-top: 10px;
+  cursor: pointer;
+  input {
+    margin-right: 5px;
+    @include size(15px, 15px);
+  }
+}
+.button-vote{
+  @include button-basic;
+  @include size(170px, 35px);
+  border: none;
+  margin-top: 15px;
+  position: relative;
+  left: 50%;
+  transform: translate(-50%);
+  background: $green;
+  color: $white;
+}
+.button-vote:hover{
+  background: $green-hover;
+}
+.button-vote:disabled{
+  background: $grey-disabled;
+}

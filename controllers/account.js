@@ -2,8 +2,9 @@ import {dataBase} from "../database.js";
 
 export const addPoll = (req, res) => {
     const sqlRequest = "INSERT INTO polls " +
-        "(`question`, `answers`, `topic_id`, `user_id`, `is_checked`, `results`, `count_votes`) VALUES(?) ";
-    const values = [req.body.question, req.body.answers, req.body.topicId, req.body.userId, false, "", 0];
+        "(`question`, `answers`, `topic_id`, `user_id`, `is_checked`, `results`, `count_votes`, `date_creation`) VALUES(?) ";
+    const currentDate = new Date();
+    const values = [req.body.question, req.body.answers, req.body.topicId, req.body.userId, false, "", 0, currentDate];
     dataBase.query(sqlRequest, [values], (err, data) => {
         if (err) {
             return res.json(err);
@@ -12,7 +13,8 @@ export const addPoll = (req, res) => {
     });
 };
 export const getMyPolls = (req, res) => {
-    const sqlRequest = "SELECT polls.poll_id, polls.question, polls.answers, polls.user_id, polls.results, topics.name, polls.count_votes\n" +
+    const sqlRequest = "SELECT polls.poll_id, polls.question, polls.answers, \n" +
+        "polls.user_id, polls.results, topics.name, polls.count_votes, polls.date_creation\n" +
         "FROM polls INNER JOIN topics on polls.topic_id = topics.id AND user_id = ?;";
     const userId = req.query.userId;
     dataBase.query(sqlRequest, userId, (err, data) => {

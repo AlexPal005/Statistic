@@ -8,7 +8,6 @@ export const AnswerTextarea = ({getErrorAnswer, changeAnswers, id, isClicked}) =
     useEffect(() => {
         setErrorAnswer("Відповіді не можуть бути пустими!");
         setAnswerDirty(false);
-        console.log(isClicked)
     }, [isClicked]);
 
     useEffect(() => {

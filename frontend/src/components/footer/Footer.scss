@@ -26,7 +26,7 @@
   margin-left: 10px;
 }
 
-.footer__social-networks svg {
+.footer__social-networks svg,  .footer__social-networks img{
   @include size(25px, 25px);
 }
 
@@ -48,7 +48,7 @@
 }
 
 .instagram{
-  color: #fc6447;
+
 }
 
 @media screen and (max-width: 1200px) {

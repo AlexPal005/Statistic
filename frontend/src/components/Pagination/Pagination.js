@@ -17,7 +17,6 @@ export const Pagination = ({countPolls, countPollsOnPage, paginate, prev, next, 
         });
     }
     const generatePageNumbers = useCallback(() => {
-        console.log('generatePageNumbers');
         // clear an array of page numbers
         setPageNumbers([]);
 
