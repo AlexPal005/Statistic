@@ -4,46 +4,51 @@ import {useCallback, useEffect, useRef, useState} from "react";
 import axios from "axios";
 import {Preloader} from "../../../components/Preloader/Preloader";
 import "./MainPolls.scss";
+import {roundPercent} from "../../roundPercent";
 
-const VoteField = ({answer, percentagesPoll, pollId, id, refsRadio, vote}) => {
-    const [isChecked, setIsChecked] = useState(false);
-
-    const handleClickRadio = () => {
-        refsRadio.current.forEach(ref => {
-            ref.checked = false;
-        });
-        setIsChecked(prev=> !prev);
-    };
-
+const VoteField = ({answer, pollId, id, refsRadio, vote, isSentVote, totalCountVotes, countVotes}) => {
+    //rounding of percentages
+    const [votePercentageRes, votePercentage] = roundPercent(totalCountVotes, countVotes);
     return (
         <label className="vote-checkbox-block answer-main">
-            <input
-                type="radio"
-                name={`radio-answer-${pollId}`}
-                ref={el => refsRadio.current[id] = el}
-                onChange={vote}
-                onClick={handleClickRadio}
-                checked={isChecked}
-            />
+            {
+                isSentVote ?
+                    <span
+                        className="percentages-answer"
+                    >
+                         {votePercentage ? votePercentageRes + "%" : 0 + "%"}
+                    </span> :
+
+                    <input
+                        type="radio"
+                        name={`radio-answer-${pollId}`}
+                        ref={el => refsRadio.current[id] = el}
+                        onChange={vote}
+                    />
+            }
             <div>
                 <span className="text-answer">{answer}</span>
-                <div className="card-answer">
-                    <div
-                        className="line-value"
-                        style={{width: percentagesPoll[id] ? percentagesPoll[id] + "%" : 0}}
-                    >
+                {isSentVote &&
+                    <div className="card-answer">
+                        <div
+                            className="line-value"
+                            style={{width: votePercentage ? votePercentage.toFixed(2) + "%" : 0}}
+                        >
+                        </div>
                     </div>
-                </div>
+                }
+
             </div>
         </label>
     );
 };
 
-const Card = ({poll, answers, percentagesPoll}) => {
+const Card = ({poll, answers, countVotes}) => {
 
     const [isVoted, setIsVoted] = useState(false);
     const refsRadio = useRef([]);
     const [isChangedVote, setIsChangeVote] = useState(false);
+    const [isSentVote, setIsSentVote] = useState(false);
 
     function vote() {
         setIsChangeVote(prev => !prev);
@@ -62,6 +67,7 @@ const Card = ({poll, answers, percentagesPoll}) => {
     }, [isChangedVote]);
 
     const voteSend = () => {
+        setIsSentVote(true);
     };
     return (
         <div className="card">
@@ -77,10 +83,12 @@ const Card = ({poll, answers, percentagesPoll}) => {
                         key={index}
                         answer={answer}
                         id={index}
-                        percentagesPoll={percentagesPoll}
                         pollId={poll.poll_id}
                         refsRadio={refsRadio}
                         vote={vote}
+                        isSentVote={isSentVote}
+                        countVotes={countVotes[index]}
+                        totalCountVotes={poll.count_votes}
                     />
                 );
             })}
@@ -172,13 +180,13 @@ export const MainPolls = () => {
                     {currentPolls.map((poll) => {
                         const answers = poll.answers.split("#");
                         answers.length = answers.length - 1;
-                        const percentagesPoll = poll.results.split("#");
-                        percentagesPoll.length = percentagesPoll.length - 1;
+                        const countVotes = poll.results.split("#");
+                        countVotes.length = countVotes.length - 1;
                         return (<Card
                             key={poll.poll_id}
                             poll={poll}
                             answers={answers}
-                            percentagesPoll={percentagesPoll}
+                            countVotes={countVotes}
                         />);
                     })}
                     <Pagination
