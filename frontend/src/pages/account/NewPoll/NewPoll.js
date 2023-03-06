@@ -35,7 +35,7 @@ export const NewPoll = () => {
     //result poll
     const [resultPoll, setResultPoll] = useState({
         question: "",
-        answers: "",
+        answers: [],
         topicId: topicId,
         userId: currentUser.currentUser.id
     });
@@ -150,12 +150,12 @@ export const NewPoll = () => {
 
     // make the end result
     const editResultPoll = () => {
-        // string with answers separated by #
-        let answersString = "";
-        answersData.forEach((answer) => {
-            answersString += answer.answer + "#";
-        });
-        setResultPoll(prev => ({...prev, question: question, answers: answersString, topicId: topicId}));
+        let resAnswers = [];
+        answersData.map(answer => (
+            resAnswers.push(answer.answer)
+        ));
+
+        setResultPoll(prev => ({...prev, question: question, answers: resAnswers, topicId: topicId}));
     };
     useEffect(editResultPoll, [question, answersData, topicId]);
 

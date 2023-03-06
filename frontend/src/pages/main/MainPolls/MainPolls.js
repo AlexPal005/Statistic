@@ -26,7 +26,7 @@ const VoteField = ({answer, pollId, id, refsRadio, vote, isSentVote, totalCountV
                         onChange={vote}
                     />
             }
-            <div>
+            <div className={isSentVote ? "block-my-polls-line" : "block-main-polls-line"}>
                 <span className="text-answer">{answer}</span>
                 {isSentVote &&
                     <div className="card-answer">
@@ -92,13 +92,14 @@ const Card = ({poll, answers, countVotes}) => {
                     />
                 );
             })}
-
-            <button
-                disabled={!isVoted}
-                className="button-vote"
-                onClick={voteSend}
-            >Голосувати
-            </button>
+            {isSentVote ||
+                <button
+                    disabled={!isVoted}
+                    className="button-vote"
+                    onClick={voteSend}
+                >Голосувати
+                </button>
+            }
         </div>);
 };
 export const MainPolls = () => {

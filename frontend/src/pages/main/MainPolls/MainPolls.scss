@@ -4,6 +4,7 @@
   @include place-center;
   margin-top: 10px;
   cursor: pointer;
+  align-self: center;
   input {
     margin-right: 5px;
     @include size(15px, 15px);
@@ -25,4 +26,8 @@
 }
 .button-vote:disabled{
   background: $grey-disabled;
+}
+.block-main-polls-line{
+  width: 100%;
+  margin-left: 5px;
 }

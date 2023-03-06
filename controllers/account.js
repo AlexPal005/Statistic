@@ -1,21 +1,34 @@
 import {dataBase} from "../database.js";
 
 export const addPoll = (req, res) => {
-    const sqlRequest = "INSERT INTO polls " +
-        "(`question`, `answers`, `topic_id`, `user_id`, `is_checked`, `results`, `count_votes`, `date_creation`) VALUES(?) ";
+    const sqlRequestAddQuestion = "INSERT INTO polls " +
+        "(`question`, `topic_id`, `user_id`, `is_checked`, `date_creation`) VALUES(?) ";
     const currentDate = new Date();
-    const values = [req.body.question, req.body.answers, req.body.topicId, req.body.userId, false, "", 0, currentDate];
-    dataBase.query(sqlRequest, [values], (err, data) => {
+    const values = [req.body.question, req.body.topicId, req.body.userId, false, currentDate];
+
+    dataBase.query(sqlRequestAddQuestion, [values], (err, data) => {
         if (err) {
             return res.json(err);
         }
-        return res.status(200).json('Ваше опитування успішно надіслане модератору!');
+        const sqlRequestAddAnswers = "INSERT INTO answers (`answer`, `poll_id`) VALUES ?;";
+        const answers = [];
+        req.body.answers.map(answer => {
+            answers.push([answer, data.insertId])
+        });
+        dataBase.query(sqlRequestAddAnswers, [answers], (err, data) => {
+            if (err) {
+                return res.json(err);
+            }
+            return res.status(200).json('Ваше опитування успішно надіслане модератору!');
+        });
+
     });
+
 };
 export const getMyPolls = (req, res) => {
-    const sqlRequest = "SELECT polls.poll_id, polls.question, polls.answers, \n" +
-        "polls.user_id, polls.results, topics.name, polls.count_votes, polls.date_creation\n" +
-        "FROM polls INNER JOIN topics on polls.topic_id = topics.id AND user_id = ?;";
+    const sqlRequest = "SELECT polls.poll_id, question, topic_id, user_id, date_creation\n" +
+        "FROM polls INNER JOIN topics t on polls.topic_id = t.id\n" +
+        "WHERE polls.user_id = (?);";
     const userId = req.query.userId;
     dataBase.query(sqlRequest, userId, (err, data) => {
         if (err) {
@@ -28,6 +41,22 @@ export const getMyPolls = (req, res) => {
         const lastPollIndex = req.query.lastPollIndex;
         const polls = data.slice(firstPollIndex, lastPollIndex);
         return res.json(polls);
+    });
+};
+export const getAnswersByPollId = (req, res) => {
+    const sqlRequest = "SELECT answer_id, answer\n" +
+        "FROM answers\n" +
+        "WHERE poll_id = ?;";
+    const pollId = req.query.pollId;
+    console.warn(pollId);
+    dataBase.query(sqlRequest, pollId, (err, data) => {
+        if (err) {
+            return res.json(err);
+        }
+        if (!data.length) {
+            return res.json('Нічого не знайдено!');
+        }
+        return res.json(data);
     });
 };
 

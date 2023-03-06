@@ -7,11 +7,7 @@ export const ConfirmationPoll = (props) => {
     const [answers, setAnswers] = useState([]);
 
     useEffect(() => {
-        setAnswers(() => {
-            let answers = props.poll.answers.split("#");
-            answers.length--;
-            return answers;
-        });
+        setAnswers(props.poll.answers);
     }, [props.poll]);
 
     const clickGoBack = (e) => {
