@@ -1,0 +1,64 @@
+@import "./src/components/modulesScss/variables";
+.content-my-polls{
+  width: 100%;
+  @include place-center;
+  flex-direction: column;
+  padding-top: 30px;
+  position: relative;
+}
+.card{
+  width: 50%;
+  border-radius: 10px;
+  border: 1px solid $grey;
+  padding: 15px;
+  margin-bottom: 25px;
+  position: relative;
+}
+.card-question{
+  font-size: 25px;
+  color: $main-blue;
+  font-weight: bold;
+  margin-bottom: 7px;
+}
+
+.percentages-answer{
+  font-size: 14px;
+  color: $grey;
+  font-weight: normal;
+}
+.card-answer{
+  border: 1px solid $line-value;
+  width: 100%;
+  border-radius: 10px;
+  margin-top: 5px;
+}
+.answer-main{
+  margin-top: 10px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+.block-my-polls-line{
+  width: 90%;
+}
+.text-answer{
+  color: $main-blue;
+  font-size: 18px;
+}
+.line-value{
+  height: 10px;
+  background: $line-value;
+}
+.grey-data-card{
+  display: block;
+  margin-bottom: 7px;
+  color: $grey;
+}
+.remove-poll-icon{
+  @include size(25px, 25px);
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  color: $red-error;
+  cursor: pointer;
+}

@@ -33,18 +33,51 @@ const getTotalCountVotes = (pollId) => {
     });
 };
 
+function getCountVotesCurrAnswer(answerId) {
+    const sqlRequest = "SELECT COUNT(*) as countVotes\n" +
+        "FROM votes\n" +
+        "WHERE answer_id = (?);";
+    return new Promise((resolve, reject) => {
+        dataBase.query(sqlRequest, answerId, (err, data) => {
+            if (err) {
+                throw new Error(JSON.stringify(err));
+            }
+            resolve(data);
+        });
+    });
+}
+
+function setCountVotesToAnswers(answers) {
+    return new Promise((resolve, reject) => {
+        const resAnswers = [];
+        answers.forEach((answer, index) => {
+            getCountVotesCurrAnswer(answer.answer_id)
+                .then((countVotes => {
+                    resAnswers.push({...answer, countVotes: countVotes[0].countVotes});
+
+                }));
+            if (index === answers.length - 1) {
+                resolve(resAnswers);
+            }
+        });
+    });
+}
+
 function getNewPollIncludesAnswersAndCount(poll) {
     return new Promise((resolve, reject) => {
         getAnswersBD(poll.poll_id)
             .then(answers => {
-                return ({...poll, answers: answers});
-            })
-            .then(poll => {
-                getTotalCountVotes(poll.poll_id)
-                    .then(countVotes => {
-                        resolve({...poll, totalCountVotes: countVotes[0].countTotalVotes})
+                setCountVotesToAnswers(answers)
+                    .then(resAnswers => {
+                        return {...poll, answers: resAnswers};
+                    })
+                    .then(poll => {
+                        getTotalCountVotes(poll.poll_id)
+                            .then(countVotes => {
+                                resolve({...poll, totalCountVotes: countVotes[0].countTotalVotes})
+                            });
                     });
-            })
+            });
     });
 }
 
@@ -63,6 +96,10 @@ function formResult(polls) {
     });
 }
 
+// cut the result polls
+function cutPolls(firstPollIndex, lastPollIndex, polls) {
+    return polls.slice(firstPollIndex, lastPollIndex);
+}
 
 export const getMyPolls = (req, res) => {
     const sqlRequest = "SELECT polls.poll_id, question, t.name, user_id, date_creation\n" +
@@ -79,10 +116,7 @@ export const getMyPolls = (req, res) => {
         }
         formResult(data).then(
             result => {
-                const firstPollIndex = req.query.firstPollIndex;
-                const lastPollIndex = req.query.lastPollIndex;
-                const polls = result.slice(firstPollIndex, lastPollIndex);
-                return res.json(polls);
+                return res.json(cutPolls(req.query.firstPollIndex, req.query.lastPollIndex, result));
             },
             err => {
                 res.json(err);
@@ -91,50 +125,30 @@ export const getMyPolls = (req, res) => {
     });
 };
 
+export const getMainPolls = (req, res) => {
+    const sqlRequest = "SELECT polls.poll_id, question, t.name, user_id, date_creation\n" +
+        "FROM polls\n" +
+        "         INNER JOIN topics t on polls.topic_id = t.id\n" +
+        "WHERE topic_id = (?);";
+    const topicId = req.query.topicId;
 
-// let result = [];
-// return new Promise((resolve, reject) => {
-//     data.forEach(poll => {
-//         const writeAnswers = new Promise(async (resolve, reject) => {
-//
-//             const answers = await getAnswersBD(poll.poll_id)
-//                 .catch(err => {
-//                     throw new Error(err);
-//                 });
-//             resolve({...poll, answers: answers})
-//
-//         });
-//         writeAnswers.then(
-//             res => {
-//                 result.push(res);
-//                 if (data[data.length - 1] === poll) {
-//                     resolve(result);
-//                 }
-//
-//             },
-//             err => {
-//                 throw new Error(err);
-//             }
-//         );
-//     });
-// });
-//
-// get.then(
-//     r => {
-//         const firstPollIndex = req.query.firstPollIndex;
-//         const lastPollIndex = req.query.lastPollIndex;
-//         const polls = r.slice(firstPollIndex, lastPollIndex);
-//         return res.json(polls);
-//     },
-//     err => {
-//         res.json(err);
-//     }
-// }
-
-
-
-
-
+    dataBase.query(sqlRequest, topicId, (err, data) => {
+        if (err) {
+            return res.json(err);
+        }
+        if (!data.length) {
+            return res.json('Нічого не знайдено!');
+        }
+        formResult(data).then(
+            result => {
+                return res.json(cutPolls(req.query.firstPollIndex, req.query.lastPollIndex, result));
+            },
+            err => {
+                res.json(err);
+            }
+        );
+    });
+};
 
 
 

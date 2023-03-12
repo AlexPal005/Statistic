@@ -1,5 +1,5 @@
 import "./SideBar.scss";
-import {NavLink, Route, Routes} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 import axios from "axios";
 import React, {useEffect, useState} from "react";
 import {SlWallet} from "react-icons/sl";
@@ -9,7 +9,6 @@ import {CiBitcoin} from "react-icons/ci";
 import {BsFillPersonFill} from "react-icons/bs";
 import {BiNews} from "react-icons/bi";
 import {GiEcology} from "react-icons/gi";
-import {MainPolls} from "../../pages/main/MainPolls/MainPolls";
 
 export const SideBar = () => {
     const [topics, setTopics] = useState(null);

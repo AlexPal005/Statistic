@@ -1,12 +1,14 @@
 import {Pagination} from "../../../components/Pagination/Pagination";
 import {useParams} from "react-router-dom";
 import {useCallback, useEffect, useRef, useState} from "react";
-import axios from "axios";
 import {Preloader} from "../../../components/Preloader/Preloader";
 import "./MainPolls.scss";
 import {roundPercent} from "../../roundPercent";
+import {getCountPolls} from "../../getCountPolls";
+import {getPolls} from "../../getPolls";
 
-const VoteField = ({answer, pollId, id, refsRadio, vote, isSentVote, totalCountVotes, countVotes}) => {
+const VoteField = ({answer, pollId, id, refsRadio, vote, isSentVote, totalCountVotes}) => {
+    const countVotes = answer.countVotes;
     //rounding of percentages
     const [votePercentageRes, votePercentage] = roundPercent(totalCountVotes, countVotes);
     return (
@@ -27,7 +29,7 @@ const VoteField = ({answer, pollId, id, refsRadio, vote, isSentVote, totalCountV
                     />
             }
             <div className={isSentVote ? "block-my-polls-line" : "block-main-polls-line"}>
-                <span className="text-answer">{answer}</span>
+                <span className="text-answer">{answer.answer}</span>
                 {isSentVote &&
                     <div className="card-answer">
                         <div
@@ -43,8 +45,8 @@ const VoteField = ({answer, pollId, id, refsRadio, vote, isSentVote, totalCountV
     );
 };
 
-const Card = ({poll, answers, countVotes}) => {
-
+const Card = ({poll}) => {
+    const [answers] = useState(poll.answers);
     const [isVoted, setIsVoted] = useState(false);
     const refsRadio = useRef([]);
     const [isChangedVote, setIsChangeVote] = useState(false);
@@ -75,20 +77,19 @@ const Card = ({poll, answers, countVotes}) => {
                 Створено {new Date(poll.date_creation).toLocaleDateString()} {poll.nick_name}
             </span>
             <p className="card-question">{poll.question}</p>
-            <span className="grey-data-card">{poll.count_votes} голосів | {poll.name}</span>
+            <span className="grey-data-card">{poll.totalCountVotes} голосів | {poll.name}</span>
             <hr/>
             {answers.map((answer, index) => {
                 return (
                     <VoteField
-                        key={index}
+                        key={answer.answer_id}
                         answer={answer}
                         id={index}
                         pollId={poll.poll_id}
                         refsRadio={refsRadio}
                         vote={vote}
                         isSentVote={isSentVote}
-                        countVotes={countVotes[index]}
-                        totalCountVotes={poll.count_votes}
+                        totalCountVotes={poll.totalCountVotes}
                     />
                 );
             })}
@@ -105,57 +106,41 @@ const Card = ({poll, answers, countVotes}) => {
 export const MainPolls = () => {
     const [countPollsOnPage] = useState(5);
     const [currentPage, setCurrentPage] = useState(1);
-    const [countPolls, setCountPolls] = useState(0);
-    const [currentPolls, setCurrentPolls] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const topicId = useParams().topicId;
+    //the count of polls
+    const [countPolls, setCountPolls] = useState(0);
+    //get current polls
+    const [currentPolls, setCurrentPolls] = useState([]);
 
-    // get all polls by topic
-    const getCurrentPolls = useCallback(async () => {
-        setIsLoading(true);
-        const lastPollIndex = currentPage * countPollsOnPage;
-        const firstPollIndex = lastPollIndex - countPollsOnPage;
-        try {
-            await axios.get('/main/polls', {
-                params: {
-                    topicId: topicId, firstPollIndex: firstPollIndex, lastPollIndex: lastPollIndex
-                }
-            })
-                .then(response => {
-                    setCurrentPolls(response.data);
-                });
-        } catch (e) {
-            setCurrentPolls([]);
-            console.error(e);
-        }
-        setIsLoading(false);
-    }, [topicId, countPollsOnPage, currentPage],);
-
-    //get count all of polls
-    const getCountPolls = useCallback(async () => {
-        try {
-            await axios.get("/main/getCountPolls", {params: {topicId: topicId}})
-                .then(response => {
-                    setCountPolls(response.data[0].countPolls);
-                });
-        } catch (e) {
-            setCountPolls(0);
-            console.error(e);
-        }
-    }, [topicId]);
-
-    // get count polls and get polls from bd
+    // get a count of polls and polls
     const getData = useCallback(() => {
-        getCountPolls()
-            .then(() => {
-                getCurrentPolls().catch(console.error);
-            });
-    }, [getCountPolls, getCurrentPolls]);
+        const params = {
+            topicId: topicId
+        };
 
-    // get the count of polls and current polls
+        setIsLoading(true);
+        getCountPolls('/main/getCountPolls', params)
+            .then(count => {
+                if (count) {
+                    getPolls('/main/getMainPolls/', params, currentPage, countPollsOnPage)
+                        .then((polls => {
+                            setCurrentPolls(polls);
+                        }));
+                }
+                setCountPolls(count);
+            })
+            .catch(err => {
+                console.error(err);
+            });
+
+        setIsLoading(false);
+
+    }, [countPolls, currentPolls, currentPage, topicId]);
+
     useEffect(() => {
         getData();
-    }, [getData]);
+    }, [currentPage, topicId])
 
     //change the number of page
     const paginate = pageNumber => setCurrentPage(pageNumber);
@@ -177,28 +162,24 @@ export const MainPolls = () => {
         <div className="content-my-polls">
             {isLoading ? <Preloader/> :
 
-                !currentPolls.length ? <div className="error">Нічого не знайдено!</div> : <>
-                    {currentPolls.map((poll) => {
-                        const answers = poll.answers.split("#");
-                        answers.length = answers.length - 1;
-                        const countVotes = poll.results.split("#");
-                        countVotes.length = countVotes.length - 1;
-                        return (<Card
-                            key={poll.poll_id}
-                            poll={poll}
-                            answers={answers}
-                            countVotes={countVotes}
-                        />);
-                    })}
-                    <Pagination
-                        countPolls={countPolls}
-                        countPollsOnPage={countPollsOnPage}
-                        paginate={paginate}
-                        next={next}
-                        prev={prev}
-                        currentPage={currentPage}
-                    />
-                </>
+                !countPolls ? <div className="error">Нічого не знайдено!</div> :
+                    <>
+                        {currentPolls.map((poll) => {
+                            return (
+                                <Card
+                                    key={poll.poll_id}
+                                    poll={poll}
+                                />);
+                        })}
+                        <Pagination
+                            countPolls={countPolls}
+                            countPollsOnPage={countPollsOnPage}
+                            paginate={paginate}
+                            next={next}
+                            prev={prev}
+                            currentPage={currentPage}
+                        />
+                    </>
 
             }
         </div>
