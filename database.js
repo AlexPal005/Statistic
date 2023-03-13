@@ -5,13 +5,13 @@ export const dataBase = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     database: 'statistic',
-    password: ''
+    password: '',
+    multipleStatements: true
 });
-dataBase.connect(function(err){
+dataBase.connect(function (err) {
     if (err) {
         return console.error('Error: ' + err.message);
-    }
-    else{
+    } else {
         console.log('Connected to mysql server is successful');
     }
 });

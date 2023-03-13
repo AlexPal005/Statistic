@@ -104,7 +104,7 @@ export const MyPolls = () => {
 
     useEffect(() => {
         getData();
-    },[currentPage])
+    }, [currentPage, countPolls])
 
     //show confirmation to delete
     const handleShowConfirmDelete = (pollId) => {
@@ -119,6 +119,7 @@ export const MyPolls = () => {
             console.log(e);
         }
         closeModal();
+        setCountPolls(prev => prev - 1);
         if (countPolls % countPollsOnPage === 1) {
             setCurrentPage(prev => prev - 1);
         }

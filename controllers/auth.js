@@ -54,7 +54,6 @@ export const confirmation = (req, res) => {
             };
             mailer.sendMail(options, (error, info) => {
                 if (error) {
-                    console.log(error);
                     return res.status(500).json(error);
                 } else {
                     console.log('Email sent: ' + info.response);

@@ -112,7 +112,7 @@ export const getMyPolls = (req, res) => {
             return res.json(err);
         }
         if (!data.length) {
-            return res.json('Ви ще не створили опитувань!');
+            return res.status(400).json('Ви ще не створили опитувань!');
         }
         formResult(data).then(
             result => {
@@ -137,7 +137,7 @@ export const getMainPolls = (req, res) => {
             return res.json(err);
         }
         if (!data.length) {
-            return res.json('Нічого не знайдено!');
+            return res.status(400).json('Нічого не знайдено!');
         }
         formResult(data).then(
             result => {
