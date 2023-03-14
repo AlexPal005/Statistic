@@ -2,9 +2,11 @@ import {dataBase} from "../../database.js";
 
 
 function getAnswersBD(pollId) {
-    const sqlRequest = "SELECT answer_id, answer\n" +
-        "FROM answers\n" +
-        "WHERE poll_id = ?;";
+
+    const sqlRequest = `SELECT answer_id, answer
+                        FROM answers
+                        WHERE poll_id = ?;`;
+
     return new Promise((resolve, reject) => {
         dataBase.query(sqlRequest, pollId, (err, data) => {
             if (err) {

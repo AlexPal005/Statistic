@@ -16,7 +16,6 @@ export function getPolls(url, params, currentPage, countPollsOnPage) {
             })
             .then(response => {
                 resolve(response.data)
-                console.log(response.data)
             });
     });
 }

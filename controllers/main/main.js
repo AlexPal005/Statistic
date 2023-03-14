@@ -1,4 +1,4 @@
-import {dataBase} from "../database.js";
+import {dataBase} from "../../database.js";
 
 export const getTopics = (req, res) => {
 

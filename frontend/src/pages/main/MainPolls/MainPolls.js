@@ -1,16 +1,22 @@
 import {Pagination} from "../../../components/Pagination/Pagination";
 import {useParams} from "react-router-dom";
-import {useCallback, useEffect, useRef, useState} from "react";
+import {useCallback, useContext, useEffect, useRef, useState} from "react";
 import {Preloader} from "../../../components/Preloader/Preloader";
 import "./MainPolls.scss";
 import {roundPercent} from "../../roundPercent";
 import {getCountPolls} from "../../getCountPolls";
 import {getPolls} from "../../getPolls";
+import {AuthContext} from "../../../context/authContext";
+import axios from "axios";
 
-const VoteField = ({answer, pollId, id, refsRadio, vote, isSentVote, totalCountVotes}) => {
+const VoteField = ({answer, pollId, id, refsRadio, vote, isSentVote, totalCountVotes, indexForRefs}) => {
     const countVotes = answer.countVotes;
     //rounding of percentages
     const [votePercentageRes, votePercentage] = roundPercent(totalCountVotes, countVotes);
+
+    const handleChangeRadio = () => {
+        vote(id);
+    };
     return (
         <label className="vote-checkbox-block answer-main">
             {
@@ -24,8 +30,8 @@ const VoteField = ({answer, pollId, id, refsRadio, vote, isSentVote, totalCountV
                     <input
                         type="radio"
                         name={`radio-answer-${pollId}`}
-                        ref={el => refsRadio.current[id] = el}
-                        onChange={vote}
+                        ref={el => refsRadio.current[indexForRefs] = el}
+                        onChange={handleChangeRadio}
                     />
             }
             <div className={isSentVote ? "block-my-polls-line" : "block-main-polls-line"}>
@@ -46,14 +52,17 @@ const VoteField = ({answer, pollId, id, refsRadio, vote, isSentVote, totalCountV
 };
 
 const Card = ({poll}) => {
+    const currentUser = useContext(AuthContext);
     const [answers] = useState(poll.answers);
     const [isVoted, setIsVoted] = useState(false);
     const refsRadio = useRef([]);
     const [isChangedVote, setIsChangeVote] = useState(false);
     const [isSentVote, setIsSentVote] = useState(false);
+    const [answerId, setAnswerId] = useState(null);
 
-    function vote() {
+    function vote(answerId) {
         setIsChangeVote(prev => !prev);
+        setAnswerId(answerId);
     }
 
     useEffect(() => {
@@ -68,9 +77,24 @@ const Card = ({poll}) => {
         });
     }, [isChangedVote]);
 
+    // send the vote to db
     const voteSend = () => {
-        setIsSentVote(true);
+        axios.post("/main/vote",
+            {
+                answerId: answerId,
+                userId: currentUser.currentUser.id,
+                pollId: poll.poll_id
+            })
+            .then(response => {
+                console.log(response);
+                setIsSentVote(true);
+            })
+            .catch(err => {
+                console.error(err);
+                setIsSentVote(false);
+            });
     };
+
     return (
         <div className="card">
             <span className="grey-data-card">
@@ -84,12 +108,13 @@ const Card = ({poll}) => {
                     <VoteField
                         key={answer.answer_id}
                         answer={answer}
-                        id={index}
+                        id={answer.answer_id}
                         pollId={poll.poll_id}
                         refsRadio={refsRadio}
                         vote={vote}
                         isSentVote={isSentVote}
                         totalCountVotes={poll.totalCountVotes}
+                        indexForRefs={index}
                     />
                 );
             })}

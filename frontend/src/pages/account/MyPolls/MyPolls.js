@@ -120,7 +120,7 @@ export const MyPolls = () => {
         }
         closeModal();
         setCountPolls(prev => prev - 1);
-        if (countPolls % countPollsOnPage === 1) {
+        if (countPolls % countPollsOnPage === 1 && countPolls !== 1) {
             setCurrentPage(prev => prev - 1);
         }
     };
