@@ -83,13 +83,45 @@ function getNewPollIncludesAnswersAndCount(poll) {
     });
 }
 
+function getUsersVote(pollId) {
+    const sqlRequest = `SELECT a.answer_id, user_id
+                        FROM votes
+                                 INNER JOIN answers a on votes.answer_id = a.answer_id
+                        WHERE a.poll_id = ${pollId};`;
+
+    return new Promise((resolve, reject) => {
+        dataBase.query(sqlRequest, (err, data) => {
+            if (err) {
+                throw new Error(JSON.stringify(err));
+            }
+            resolve(data);
+        });
+    });
+}
+
+// add to the poll users who have voted
+function addUsersIdVoteToPolls(polls) {
+    return new Promise((resolve, reject) => {
+        polls.forEach((poll, index) => {
+            getUsersVote(poll.poll_id)
+                .then(votes => {
+                    poll.usersVotes = votes;
+                    if (polls.length - 1 === index) {
+                        resolve(polls);
+                    }
+                });
+        });
+    });
+}
+
+//final result polls
 function formResult(polls) {
     return new Promise((resolve, reject) => {
         let resultPolls = [];
         polls.forEach((poll, index) => {
             getNewPollIncludesAnswersAndCount(poll)
-                .then(answers => {
-                    resultPolls.push(answers);
+                .then(resPoll => {
+                    resultPolls.push(resPoll);
                     if (polls.length - 1 === index) {
                         resolve(resultPolls);
                     }
@@ -143,10 +175,13 @@ export const getMainPolls = (req, res) => {
         }
         formResult(data).then(
             result => {
-                return res.json(cutPolls(req.query.firstPollIndex, req.query.lastPollIndex, result));
+                addUsersIdVoteToPolls(result)
+                    .then(polls => {
+                        return res.json(cutPolls(req.query.firstPollIndex, req.query.lastPollIndex, polls));
+                    });
             },
             err => {
-                res.json(err);
+                res.status(500).json(err);
             }
         );
     });

@@ -13,8 +13,9 @@ import {getPolls} from "../../getPolls";
 const VoteField = ({answer, index, totalCountVotes}) => {
     const countVotes = answer.countVotes;
 
+    const [votePercentage] = useState(countVotes / totalCountVotes * 100);
     //rounding of percentages
-    const [votePercentageRes, votePercentage] = roundPercent(totalCountVotes, countVotes);
+    const [votePercentageRes] = useState(roundPercent(totalCountVotes, countVotes));
 
     return (
         <div key={index} className="answer-main">

@@ -9,5 +9,5 @@ export const roundPercent = (totalCountVotes, countVotes) => {
             votePercentageRes = votePercentage.toFixed(2);
         }
     }
-    return [votePercentageRes, votePercentage];
+    return votePercentageRes;
 };

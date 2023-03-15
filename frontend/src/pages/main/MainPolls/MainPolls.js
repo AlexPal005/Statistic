@@ -9,10 +9,26 @@ import {getPolls} from "../../getPolls";
 import {AuthContext} from "../../../context/authContext";
 import axios from "axios";
 
-const VoteField = ({answer, pollId, id, refsRadio, vote, isSentVote, totalCountVotes, indexForRefs}) => {
-    const countVotes = answer.countVotes;
+const VoteField = ({
+                       answer,
+                       pollId,
+                       id,
+                       refsRadio,
+                       vote,
+                       totalCountVotes,
+                       indexForRefs,
+                       isUserVotedBefore,
+                       countVotes
+                   }) => {
+    const [votePercentage, setVotePercentage] = useState(countVotes / totalCountVotes * 100);
     //rounding of percentages
-    const [votePercentageRes, votePercentage] = roundPercent(totalCountVotes, countVotes);
+    const [votePercentageRes, setVotePercentageRes] = useState(roundPercent(totalCountVotes, countVotes));
+
+    useEffect(() => {
+        setVotePercentage(countVotes / totalCountVotes * 100);
+        setVotePercentageRes(roundPercent(totalCountVotes, countVotes));
+        //console.log([votePercentage, votePercentage])
+    }, [totalCountVotes, countVotes]);
 
     const handleChangeRadio = () => {
         vote(id);
@@ -20,7 +36,7 @@ const VoteField = ({answer, pollId, id, refsRadio, vote, isSentVote, totalCountV
     return (
         <label className="vote-checkbox-block answer-main">
             {
-                isSentVote ?
+                isUserVotedBefore ?
                     <span
                         className="percentages-answer"
                     >
@@ -34,9 +50,9 @@ const VoteField = ({answer, pollId, id, refsRadio, vote, isSentVote, totalCountV
                         onChange={handleChangeRadio}
                     />
             }
-            <div className={isSentVote ? "block-my-polls-line" : "block-main-polls-line"}>
+            <div className={isUserVotedBefore ? "block-my-polls-line" : "block-main-polls-line"}>
                 <span className="text-answer">{answer.answer}</span>
-                {isSentVote &&
+                {isUserVotedBefore &&
                     <div className="card-answer">
                         <div
                             className="line-value"
@@ -51,14 +67,29 @@ const VoteField = ({answer, pollId, id, refsRadio, vote, isSentVote, totalCountV
     );
 };
 
-const Card = ({poll}) => {
+const Card = ({poll, updateDataIfVoted}) => {
     const currentUser = useContext(AuthContext);
     const [answers] = useState(poll.answers);
     const [isVoted, setIsVoted] = useState(false);
     const refsRadio = useRef([]);
     const [isChangedVote, setIsChangeVote] = useState(false);
-    const [isSentVote, setIsSentVote] = useState(false);
     const [answerId, setAnswerId] = useState(null);
+    //Has the user voted before
+    const [isUserVotedBefore, setIsUserVotedBefore] = useState(false);
+
+    const checkHasUserVoted = useCallback(() => {
+        if (currentUser.currentUser) {
+            poll.usersVotes.forEach((vote) => {
+                if (vote.user_id === currentUser.currentUser.id) {
+                    setIsUserVotedBefore(true);
+                }
+            });
+        }
+    }, [poll]);
+
+    useEffect(() => {
+        checkHasUserVoted();
+    }, [checkHasUserVoted])
 
     function vote(answerId) {
         setIsChangeVote(prev => !prev);
@@ -79,20 +110,23 @@ const Card = ({poll}) => {
 
     // send the vote to db
     const voteSend = () => {
-        axios.post("/main/vote",
-            {
-                answerId: answerId,
-                userId: currentUser.currentUser.id,
-                pollId: poll.poll_id
-            })
-            .then(response => {
-                console.log(response);
-                setIsSentVote(true);
-            })
-            .catch(err => {
-                console.error(err);
-                setIsSentVote(false);
-            });
+        if (currentUser.currentUser) {
+            axios.post("/main/vote",
+                {
+                    answerId: answerId,
+                    userId: currentUser.currentUser.id,
+                    pollId: poll.poll_id
+                })
+                .then(response => {
+                    console.log(response);
+                })
+                .catch(err => {
+                    console.error(err);
+                });
+            updateDataIfVoted();
+            console.log(poll)
+        }
+
     };
 
     return (
@@ -101,7 +135,10 @@ const Card = ({poll}) => {
                 Створено {new Date(poll.date_creation).toLocaleDateString()} {poll.nick_name}
             </span>
             <p className="card-question">{poll.question}</p>
-            <span className="grey-data-card">{poll.totalCountVotes} голосів | {poll.name}</span>
+            <span className="grey-data-card">{poll.totalCountVotes} голосів | {poll.name}
+                {isUserVotedBefore && <span className="error"> | Проголосовано!</span>}
+            </span>
+
             <hr/>
             {answers.map((answer, index) => {
                 return (
@@ -112,23 +149,26 @@ const Card = ({poll}) => {
                         pollId={poll.poll_id}
                         refsRadio={refsRadio}
                         vote={vote}
-                        isSentVote={isSentVote}
+                        isUserVotedBefore={isUserVotedBefore}
                         totalCountVotes={poll.totalCountVotes}
+                        countVotes = {answer.countVotes}
                         indexForRefs={index}
                     />
                 );
             })}
-            {isSentVote ||
+            {isUserVotedBefore ||
                 <button
                     disabled={!isVoted}
                     className="button-vote"
                     onClick={voteSend}
-                >Голосувати
+                >
+                    Голосувати
                 </button>
             }
         </div>);
 };
 export const MainPolls = () => {
+
     const [countPollsOnPage] = useState(5);
     const [currentPage, setCurrentPage] = useState(1);
     const [isLoading, setIsLoading] = useState(true);
@@ -138,10 +178,16 @@ export const MainPolls = () => {
     //get current polls
     const [currentPolls, setCurrentPolls] = useState([]);
 
+    const [checkIsVoted, setCheckIsVoted] = useState(1);
+
+    const updateDataIfVoted = () => {
+        setCheckIsVoted(prev => prev + 1);
+    };
+
     // get a count of polls and polls
     const getData = useCallback(() => {
         const params = {
-            topicId: topicId
+            topicId: topicId,
         };
 
         setIsLoading(true);
@@ -151,6 +197,7 @@ export const MainPolls = () => {
                     getPolls('/main/getMainPolls/', params, currentPage, countPollsOnPage)
                         .then((polls => {
                             setCurrentPolls(polls);
+                            console.log(polls);
                         }));
                 }
                 setCountPolls(count);
@@ -161,11 +208,11 @@ export const MainPolls = () => {
 
         setIsLoading(false);
 
-    }, [countPolls, currentPolls, currentPage, topicId]);
+    }, [countPolls, currentPolls, currentPage, topicId, checkIsVoted]);
 
     useEffect(() => {
         getData();
-    }, [currentPage, topicId])
+    }, [currentPage, topicId, checkIsVoted])
 
     //change the number of page
     const paginate = pageNumber => setCurrentPage(pageNumber);
@@ -194,6 +241,7 @@ export const MainPolls = () => {
                                 <Card
                                     key={poll.poll_id}
                                     poll={poll}
+                                    updateDataIfVoted={updateDataIfVoted}
                                 />);
                         })}
                         <Pagination
