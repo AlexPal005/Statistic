@@ -1,5 +1,5 @@
 import {Pagination} from "../../../components/Pagination/Pagination";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useCallback, useContext, useEffect, useRef, useState} from "react";
 import {Preloader} from "../../../components/Preloader/Preloader";
 import "./MainPolls.scss";
@@ -20,15 +20,14 @@ const VoteField = ({
                        isUserVotedBefore,
                        countVotes
                    }) => {
-    const [votePercentage, setVotePercentage] = useState(countVotes / totalCountVotes * 100);
+    const [votePercentage, setVotePercentage] = useState(0);
     //rounding of percentages
-    const [votePercentageRes, setVotePercentageRes] = useState(roundPercent(totalCountVotes, countVotes));
+    const [votePercentageRes, setVotePercentageRes] = useState(0);
 
     useEffect(() => {
         setVotePercentage(countVotes / totalCountVotes * 100);
         setVotePercentageRes(roundPercent(totalCountVotes, countVotes));
-        //console.log([votePercentage, votePercentage])
-    }, [totalCountVotes, countVotes]);
+    }, [countVotes, totalCountVotes]);
 
     const handleChangeRadio = () => {
         vote(id);
@@ -68,8 +67,9 @@ const VoteField = ({
 };
 
 const Card = ({poll, updateDataIfVoted}) => {
+    const navigate = useNavigate();
     const currentUser = useContext(AuthContext);
-    const [answers] = useState(poll.answers);
+    const [answers, setAnswers] = useState(poll.answers);
     const [isVoted, setIsVoted] = useState(false);
     const refsRadio = useRef([]);
     const [isChangedVote, setIsChangeVote] = useState(false);
@@ -84,8 +84,14 @@ const Card = ({poll, updateDataIfVoted}) => {
                     setIsUserVotedBefore(true);
                 }
             });
+        } else {
+            setIsUserVotedBefore(false);
         }
-    }, [poll]);
+    }, [poll, currentUser.currentUser]);
+
+    useEffect(() => {
+        setAnswers(poll.answers);
+    }, [poll.answers]);
 
     useEffect(() => {
         checkHasUserVoted();
@@ -118,15 +124,15 @@ const Card = ({poll, updateDataIfVoted}) => {
                     pollId: poll.poll_id
                 })
                 .then(response => {
+                    updateDataIfVoted();
                     console.log(response);
                 })
                 .catch(err => {
                     console.error(err);
                 });
-            updateDataIfVoted();
-            console.log(poll)
+        } else {
+            navigate('/LogIn');
         }
-
     };
 
     return (
@@ -151,8 +157,8 @@ const Card = ({poll, updateDataIfVoted}) => {
                         vote={vote}
                         isUserVotedBefore={isUserVotedBefore}
                         totalCountVotes={poll.totalCountVotes}
-                        countVotes = {answer.countVotes}
                         indexForRefs={index}
+                        countVotes={answer.countVotes}
                     />
                 );
             })}
@@ -213,6 +219,7 @@ export const MainPolls = () => {
     useEffect(() => {
         getData();
     }, [currentPage, topicId, checkIsVoted])
+
 
     //change the number of page
     const paginate = pageNumber => setCurrentPage(pageNumber);
