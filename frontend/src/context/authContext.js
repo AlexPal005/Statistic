@@ -1,12 +1,17 @@
 import {createContext, useEffect, useState} from "react";
 import axios from "axios";
+import jwtDecode from "jwt-decode";
 
 export const AuthContext = createContext(null);
 export const AuthContextProvider = ({children}) => {
     const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem('user')) || null);
     const login = async (inputs) => {
-        const res = await axios.post("/auth/login", inputs);
-        setCurrentUser(res.data);
+        axios.post("/auth/login", inputs)
+            .then(response => {
+                const jwtToken = response.data;
+                const decodeUser = jwtDecode(jwtToken);
+                setCurrentUser({...decodeUser, jwtToken: jwtToken});
+            })
     };
 
     const logOut = async () => {
@@ -16,6 +21,7 @@ export const AuthContextProvider = ({children}) => {
 
     useEffect(() => {
         localStorage.setItem('user', JSON.stringify(currentUser));
+        console.log(currentUser)
     }, [currentUser]);
 
     return (

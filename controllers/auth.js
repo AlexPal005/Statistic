@@ -18,13 +18,21 @@ export const register = (req, res) => {
         if (err) {
             return res.json(err);
         }
-        return res.status(200).json('Користувача створено успішно!');
+
+        const sqlAddRole = `INSERT INTO roles_of_users
+                            VALUES (2, ${data.insertId});`
+        dataBase.query(sqlAddRole, (err, data) => {
+            if (err) {
+                return res.json(err);
+            }
+            return res.status(200).json('Користувача створено успішно!');
+        });
     });
 };
 
 export const confirmation = (req, res) => {
     //check existing user
-    const sqlRequest = "SELECT *FROM user WHERE email = ? OR nick_name = ?";
+    const sqlRequest = "SELECT * FROM user WHERE email = ? OR nick_name = ?";
     dataBase.query(sqlRequest, [req.body.email, req.body.nickName],
         (err, data) => {
             if (err) {
@@ -47,9 +55,9 @@ export const confirmation = (req, res) => {
                 to: req.body.email,
                 subject: "Підтвердження реєстрації Statistics",
                 html: `<h1 style = "color: rgb(41, 159, 215)">Statistics</h1> 
-        <h3>${req.body.nickName.toUpperCase()}, для того, щоб підтвердити реєстрацію уведіть в поле даний код: </h3> 
-        <h2>${randomKey}</h2>
-        <h3>Якщо ви не реєструвались, то проігноруйте дане повідомлення!</h3>`
+                    <h3>${req.body.nickName.toUpperCase()}, для того, щоб підтвердити реєстрацію уведіть в поле даний код: </h3> 
+                    <h2>${randomKey}</h2>
+                    <h3>Якщо ви не реєструвались, то проігноруйте дане повідомлення!</h3>`
 
             };
             mailer.sendMail(options, (error, info) => {
@@ -65,6 +73,27 @@ export const confirmation = (req, res) => {
 
 };
 
+// get user's roles
+function getRolesUser(userId) {
+
+    const sqlRequest = `SELECT role_name
+                        FROM roles
+                                 INNER JOIN roles_of_users rou on roles.role_id = rou.role_id
+                        WHERE rou.user_id = ${userId};`;
+
+    return new Promise((resolve) => {
+        dataBase.query(sqlRequest, (err, data) => {
+            if (err) {
+                throw new Error(JSON.stringify(err));
+            }
+            if (!data.length) {
+                throw new Error('Помилка! Ролей не знайдено!');
+            }
+            resolve(data);
+        });
+    })
+}
+
 export const login = (req, res) => {
     //check user
     const sqlRequest = "SELECT * FROM user WHERE nick_name = ? ";
@@ -73,7 +102,7 @@ export const login = (req, res) => {
         if (err) {
             return res.json(err);
         }
-        if (data.length === 0) {
+        if (!data.length) {
             return res.status(404).json('Користувача не знайдено!');
         }
 
@@ -83,12 +112,28 @@ export const login = (req, res) => {
         if (!isPasswordCorrect) {
             return res.status(404).json('Неправильне ім\'я користувача або пароль!');
         }
-        const token = jwt.sign({id: data[0].id}, "jwtkey");
-        const {password, ...other} = data[0];
+        getRolesUser(data[0].id)
+            .then(roles => {
+                // jwt token
+                const {password, ...other} = data[0];
+                const dataToSend = {
+                    id: other.id,
+                    nick_name: other.nick_name,
+                    roles: []
+                };
 
-        res.cookie('access_token', token, {
-            httpOnly: true
-        }).status(200).json(other);
+                roles.forEach(role => {
+                    dataToSend.roles.push(role.role_name);
+                });
+
+                const token = jwt.sign( dataToSend, "jwtkey");
+                res.cookie('accessToken', token, {
+                    httpOnly: true
+                }).status(200).json(token);
+            })
+            .catch((err) => {
+                return res.status(501).json({message: "Помилка в отриманні ролей!", error: err});
+            });
     });
 };
 

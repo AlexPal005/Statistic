@@ -3,11 +3,12 @@ import {addPoll} from "../controllers/acccount/addPoll.js";
 import {getMyPolls} from "../controllers/acccount/getMyPolls.js";
 import {deletePoll} from "../controllers/acccount/deletePoll.js";
 import {getCountPolls} from "../controllers/acccount/getCountPolls.js";
+import {roleMiddleWare} from "../middleWares/roleMiddleWare.js";
 
 const router = express.Router();
-router.post('/addPoll', addPoll);
-router.get('/getMyPolls', getMyPolls);
-router.post('/deletePoll', deletePoll);
-router.get('/getCountPolls', getCountPolls);
+router.post('/addPoll', roleMiddleWare(['ADMIN', 'USER']), addPoll);
+router.get('/getMyPolls', roleMiddleWare(['ADMIN', 'USER']), getMyPolls);
+router.post('/deletePoll', roleMiddleWare(['ADMIN', 'USER']), deletePoll);
+router.get('/getCountPolls', roleMiddleWare(['ADMIN', 'USER']), getCountPolls);
 
 export default router;
