@@ -15,8 +15,23 @@ class App extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {
+            userRoles: []
+        }
+        this.getRolesUser = this.getRolesUser.bind(this);
     }
+
+       componentDidMount() {
+        this.getRolesUser();
+
+        if(this.state.userRoles.includes('ADMIN')){
+            console.log(true);
+        }
+    }
+
+    getRolesUser = () => {
+        this.setState({userRoles: this.context.currentUser.roles});
+    };
 
     render() {
         return (
@@ -24,24 +39,27 @@ class App extends React.Component {
                 <Header/>
                 <div className="content">
                     <Routes>
-                        <Route path="/main/*" element={<Main/>}/>
-                        <Route path="*" element={<Navigate to="/main" replace/>}/>
+                        <Route path='/*' element={<Main/>}/>
+                        <Route path='/admin' element={<div>AdminPanel</div>}></Route>
+                        <Route path='/user'>
+                            <Route
+                                path="account/*"
+                                element={!this.context.currentUser ? <Navigate replace to='/'/> : <Account/>}
+                            />
+                        </Route>
                         <Route
                             path="/registration"
-                            element={this.context.currentUser ? <Navigate replace to="/main"/> : <FormRegistration/>}
+                            element={this.context.currentUser ? <Navigate replace to="/"/> : <FormRegistration/>}
                         />
                         <Route
                             path="/LogIn"
-                            element={this.context.currentUser ? <Navigate replace to="/main"/> : <LogIn/>}
+                            element={this.context.currentUser ? <Navigate replace to="/"/> : <LogIn/>}
                         />
                         <Route
                             path="/confirmation"
-                            element={this.context.currentUser ? <Navigate replace to="/main"/> : <Confirmation/>}
+                            element={this.context.currentUser ? <Navigate replace to="/"/> : <Confirmation/>}
                         />
-                        <Route
-                            path="/account/*"
-                            element={!this.context.currentUser ? <Navigate replace to="/main"/> : <Account/>}
-                        />
+                        <Route path="*" element={<Navigate to="/" replace/>}/>
                     </Routes>
 
                 </div>

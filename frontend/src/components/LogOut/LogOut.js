@@ -8,7 +8,7 @@ export const LogOut = () => {
     const {currentUser, logOut} = useContext(AuthContext);
     return (
         <>
-            <Link to="/account/my-polls" className="side-bar__links-menu-item side-bar-account-item">
+            <Link to="/user/account/my-polls" className="side-bar__links-menu-item side-bar-account-item">
                 <MdOutlineAccountCircle className="icon-account"/>
                 <span className="nick-name">{currentUser?.nick_name}</span>
             </Link>

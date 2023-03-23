@@ -14,7 +14,7 @@ export const Account = () => {
         <div className="content-account-page">
             <div className="side-bar">
                 <NavLink
-                    to="/account/my-polls"
+                    to="/user/account/my-polls"
                     className="side-bar__links-menu-item side-bar-account-item side-bar-margin"
                     exact="true"
                 >
@@ -22,7 +22,7 @@ export const Account = () => {
                     <span>Мої опитування</span>
                 </NavLink>
                 <NavLink
-                    to="/account/newPoll"
+                    to="/user/account/newPoll"
                     className="side-bar__links-menu-item side-bar-account-item side-bar-margin"
                     exact="true"
                 >
@@ -39,8 +39,8 @@ export const Account = () => {
                 </div>
             </div>
             <Routes>
-                <Route path="/newPoll" element={<NewPoll/>}/>
-                <Route path="/my-polls" element={<MyPolls/>}/>
+                <Route path="newPoll" element={<NewPoll/>}/>
+                <Route path="my-polls" element={<MyPolls/>}/>
             </Routes>
         </div>
 

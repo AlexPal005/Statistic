@@ -5,7 +5,7 @@ import logo from "../media/logo1.png";
 const Logo = ()=>{
     return(
         <div className= "header__logo">
-            <Link to ="/main" className="logo-link">
+            <Link to ="/" className="logo-link">
                 <img src = {logo} alt = "Statistics"/>
                 <p>Statistic</p>
             </Link>
