@@ -2,6 +2,7 @@ import express from 'express';
 import mainRoutes from './routes/main.js';
 import authRoutes from './routes/auth.js';
 import pollsRoutes from './routes/account.js';
+import adminRoutes from './routes/admin.js';
 import cookieParser from 'cookie-parser';
 
 const app = express();
@@ -12,6 +13,7 @@ app.use(cookieParser());
 app.use('/api/main', mainRoutes );
 app.use('/api/auth', authRoutes );
 app.use('/api/polls', pollsRoutes);
+app.use('/api/admin', adminRoutes);
 
 //start server
 app.listen(PORT, (err) => {

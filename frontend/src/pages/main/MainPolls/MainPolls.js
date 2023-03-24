@@ -203,7 +203,6 @@ export const MainPolls = () => {
                     getPolls('/main/getMainPolls/', params, currentPage, countPollsOnPage)
                         .then((polls => {
                             setCurrentPolls(polls);
-                            console.log(polls);
                         }));
                 }
                 setCountPolls(count);

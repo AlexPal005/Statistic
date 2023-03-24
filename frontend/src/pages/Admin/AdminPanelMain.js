@@ -1,6 +1,6 @@
 import {NavLink, Route, Routes} from "react-router-dom";
 import React from "react";
-import {AdminPolls} from "./AdminPolls";
+import {AdminPolls} from "./AdminPolls/AdminPolls";
 import {AddAdmin} from "./AddAdmin";
 
 export const AdminPanelMain = () => {
