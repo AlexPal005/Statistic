@@ -136,9 +136,10 @@ function cutPolls(firstPollIndex, lastPollIndex, polls) {
 }
 
 export const getMyPolls = (req, res) => {
-    const sqlRequest = "SELECT polls.poll_id, question, t.name, user_id, date_creation\n" +
-        "FROM polls INNER JOIN topics t on polls.topic_id = t.id\n" +
-        "WHERE polls.user_id = (?);";
+    const sqlRequest = `SELECT polls.poll_id, question, t.name, user_id, date_creation
+                        FROM polls
+                                 INNER JOIN topics t on polls.topic_id = t.id
+                        WHERE polls.user_id = (?);`;
     const userId = req.query.userId;
 
     dataBase.query(sqlRequest, userId, (err, data) => {
@@ -160,10 +161,10 @@ export const getMyPolls = (req, res) => {
 };
 
 export const getMainPolls = (req, res) => {
-    const sqlRequest = "SELECT polls.poll_id, question, t.name, user_id, date_creation\n" +
-        "FROM polls\n" +
-        "         INNER JOIN topics t on polls.topic_id = t.id\n" +
-        "WHERE topic_id = (?);";
+    const sqlRequest = `SELECT polls.poll_id, question, t.name, user_id, date_creation
+                        FROM polls
+                                 INNER JOIN topics t on polls.topic_id = t.id
+                        WHERE topic_id = (?) AND polls.is_checked = TRUE AND polls.is_allowed = TRUE;`;
     const topicId = req.query.topicId;
 
     dataBase.query(sqlRequest, topicId, (err, data) => {

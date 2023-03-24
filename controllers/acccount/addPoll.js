@@ -2,9 +2,9 @@ import {dataBase} from "../../database.js";
 
 export const addPoll = (req, res) => {
     const sqlRequestAddQuestion = "INSERT INTO polls " +
-        "(`question`, `topic_id`, `user_id`, `is_checked`, `date_creation`) VALUES(?) ";
+        "(`question`, `topic_id`, `user_id`, `is_checked`,`is_allowed`, `date_creation`) VALUES(?) ";
     const currentDate = new Date();
-    const values = [req.body.question, req.body.topicId, req.body.userId, false, currentDate];
+    const values = [req.body.question, req.body.topicId, req.body.userId, false, false, currentDate];
 
     dataBase.query(sqlRequestAddQuestion, [values], (err, data) => {
         if (err) {

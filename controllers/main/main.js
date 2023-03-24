@@ -16,7 +16,11 @@ export const getTopics = (req, res) => {
 
 // get the count of polls
 export const getCountPolls = (req, res) => {
-    const sqlRequest = "SELECT COUNT(*) as countPolls FROM polls WHERE topic_id = ?;";
+    const sqlRequest = `SELECT COUNT(*) as countPolls
+                        FROM polls
+                        WHERE topic_id = ?
+                          AND polls.is_allowed = TRUE
+                          AND polls.is_checked = TRUE;`;
     const topicId = req.query.topicId;
     dataBase.query(sqlRequest, topicId, (err, data) => {
         if (err) {

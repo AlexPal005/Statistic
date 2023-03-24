@@ -37,6 +37,13 @@ export const Account = () => {
                     <IoMdReturnRight className="icon-menu"/>
                     <span>Мої голоси</span>
                 </div>
+                <NavLink
+                    to="/user/account"
+                    className="side-bar__links-menu-item side-bar-account-item side-bar-margin"
+                    exact="true"
+                >
+                    <span>Повідомлення</span>
+                </NavLink>
             </div>
             <Routes>
                 <Route path="newPoll" element={<NewPoll/>}/>

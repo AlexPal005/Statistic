@@ -8,11 +8,13 @@ const Main = () => {
     return (
         <div className="wrapper-content">
             <SideBar/>
-            <Routes>
-                <Route path="/polls/">
-                    <Route path=":topicId" element={<MainPolls/>}/>
-                </Route>
-            </Routes>
+            <div className='content-my-polls'>
+                <Routes>
+                    <Route path="/polls/">
+                        <Route path=":topicId" element={<MainPolls/>}/>
+                    </Route>
+                </Routes>
+            </div>
         </div>
     );
 };
