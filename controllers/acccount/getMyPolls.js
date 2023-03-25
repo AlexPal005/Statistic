@@ -115,7 +115,7 @@ function addUsersIdVoteToPolls(polls) {
 }
 
 //final result polls
-function formResult(polls) {
+export function formResult(polls) {
     return new Promise((resolve, reject) => {
         let resultPolls = [];
         polls.forEach((poll, index) => {

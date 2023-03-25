@@ -1,10 +1,8 @@
 import "./ConfirmationPoll.scss";
 import axios from "axios";
-import {useContext, useEffect, useState} from "react";
-import {AuthContext} from "../../../../context/authContext";
+import {useEffect, useState} from "react";
 
 export const ConfirmationPoll = (props) => {
-    const currentUser = useContext(AuthContext);
     const [answers, setAnswers] = useState([]);
 
     useEffect(() => {

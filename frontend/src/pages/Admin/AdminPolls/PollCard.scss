@@ -1,0 +1,12 @@
+@import "../../../components/modulesScss/variables";
+.block-admin-buttons-card{
+  display: flex;
+  justify-content: center;
+}
+.block-admin-buttons-card > button:nth-child(1){
+  margin-right: 20px;
+  background-color: $red-error;
+}
+.block-admin-buttons-card > button:nth-child(1):hover{
+  background-color: $red-error-hover;
+}

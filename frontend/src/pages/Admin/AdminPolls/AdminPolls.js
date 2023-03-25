@@ -1,8 +1,9 @@
 import {Pagination} from "../../../components/Pagination/Pagination";
 import {useCallback, useEffect, useState} from "react";
-import axios from "axios";
 import {getCountPolls} from "../../getCountPolls";
 import {getPolls} from "../../getPolls";
+import {Preloader} from "../../../components/Preloader/Preloader";
+import {PollCard} from "./PollCard";
 
 export const AdminPolls = () => {
     // count of the polls that not checked
@@ -62,16 +63,27 @@ export const AdminPolls = () => {
 
     return (
         <>
-            AdminPolls
-
-            <Pagination
-                countPolls={countPolls}
-                countPollsOnPage={countPollsOnPage}
-                paginate={paginate}
-                next={next}
-                prev={prev}
-                currentPage={currentPage}
-            />
+            {isLoading ? <Preloader/> :
+                !countPolls ? <div className="error">Нічого не знайдено!</div> :
+                    <>
+                        {currentPolls.map(poll => {
+                            return (
+                                <PollCard
+                                    key = {poll.poll_id}
+                                    poll = {poll}
+                                />
+                            )
+                        })}
+                        <Pagination
+                            countPolls={countPolls}
+                            countPollsOnPage={countPollsOnPage}
+                            paginate={paginate}
+                            next={next}
+                            prev={prev}
+                            currentPage={currentPage}
+                        />
+                    </>
+            }
         </>
     );
 };
