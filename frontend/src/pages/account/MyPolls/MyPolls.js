@@ -76,7 +76,9 @@ export const MyPolls = () => {
 
     const [countPollsOnPage] = useState(5);
     const [currentPage, setCurrentPage] = useState(1);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
+
+    const [countOfLoading, setCountOfLoading] = useState(0);
 
     // get a count of polls and polls
     const getData = useCallback(() => {
@@ -84,7 +86,9 @@ export const MyPolls = () => {
             userId: currentUser.currentUser.id
         };
 
-        setIsLoading(true);
+        if (countOfLoading === 0) {
+            setIsLoading(true);
+        }
         getCountPolls("/polls/getCountPolls", params)
             .then(count => {
                 setCountPolls(count);
@@ -93,14 +97,15 @@ export const MyPolls = () => {
                 getPolls('/polls/getMyPolls/', params, currentPage, countPollsOnPage)
                     .then((polls => {
                         setCurrentPolls(polls);
+                        setIsLoading(false);
                     }))
             })
             .catch(err => {
                 console.error(err);
+                setIsLoading(false);
             });
 
-        setIsLoading(false);
-
+        setCountOfLoading(prev => prev + 1);
     }, [countPolls, currentPolls, currentPage]);
 
     useEffect(() => {
@@ -120,10 +125,10 @@ export const MyPolls = () => {
             console.log(e);
         }
         closeModal();
-        setCountPolls(prev => prev - 1);
         if (countPolls % countPollsOnPage === 1 && countPolls !== 1) {
             setCurrentPage(prev => prev - 1);
         }
+        setCountPolls(prev => prev - 1);
     };
     //change the number of page
     const paginate = pageNumber => setCurrentPage(pageNumber);

@@ -1,11 +1,26 @@
 import {useState} from "react";
 import './PollCard.scss';
+import axios from "axios";
 
-export const PollCard = ({poll}) => {
+export const PollCard = ({poll, updateDataIfAdminCheckedPoll}) => {
     const [answers] = useState(poll.answers);
 
-    const refuseHandleClick = () => {
+    function sendIsAllowed(url, isAllowed) {
+        axios.post(url, {
+            isAllowed: isAllowed,
+            pollId: poll.poll_id
+        })
+            .catch(err => {
+                console.error(err);
+            })
+        updateDataIfAdminCheckedPoll();
+    }
 
+    const refuseHandleClick = () => {
+        sendIsAllowed('/admin/setIsAllowed', false);
+    }
+    const goodHandleClick = () => {
+        sendIsAllowed('/admin/setIsAllowed', true);
     }
     return (
         <div className='card'>
@@ -29,7 +44,12 @@ export const PollCard = ({poll}) => {
                 >
                     Відмовити
                 </button>
-                <button className="buttonSend">ОК</button>
+                <button
+                    className="buttonSend"
+                    onClick={goodHandleClick}
+                >
+                    ОК
+                </button>
             </div>
         </div>
     );

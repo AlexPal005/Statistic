@@ -12,6 +12,11 @@ export const AdminPolls = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [isLoading, setIsLoading] = useState(true);
     const [currentPolls, setCurrentPolls] = useState([]);
+    const [isAdminChecked, setIsAdminChecked] = useState(1);
+
+    const updateDataIfAdminCheckedPoll = () => {
+        setIsAdminChecked(prev => prev + 1);
+    }
 
     // get a count of polls and polls
     const getData = useCallback(() => {
@@ -34,15 +39,12 @@ export const AdminPolls = () => {
 
         setIsLoading(false);
 
-    }, [currentPage]);
+    }, [currentPage, isAdminChecked]);
 
     useEffect(() => {
         getData();
-    }, [currentPage])
+    }, [currentPage, isAdminChecked])
 
-    useEffect(() => {
-        console.log()
-    }, [currentPolls]);
 
     //change the number of page
     const paginate = pageNumber => setCurrentPage(pageNumber);
@@ -69,8 +71,9 @@ export const AdminPolls = () => {
                         {currentPolls.map(poll => {
                             return (
                                 <PollCard
-                                    key = {poll.poll_id}
-                                    poll = {poll}
+                                    key={poll.poll_id}
+                                    poll={poll}
+                                    updateDataIfAdminCheckedPoll = {updateDataIfAdminCheckedPoll}
                                 />
                             )
                         })}

@@ -154,7 +154,7 @@ export const getMyPolls = (req, res) => {
                 return res.json(cutPolls(req.query.firstPollIndex, req.query.lastPollIndex, result));
             },
             err => {
-                res.json(err);
+                return res.json(err);
             }
         );
     });
@@ -178,11 +178,11 @@ export const getMainPolls = (req, res) => {
             result => {
                 addUsersIdVoteToPolls(result)
                     .then(polls => {
-                        return res.json(cutPolls(req.query.firstPollIndex, req.query.lastPollIndex, polls));
+                        return res.status(200).json(cutPolls(req.query.firstPollIndex, req.query.lastPollIndex, polls));
                     });
             },
             err => {
-                res.status(500).json(err);
+                return res.status(500).json(err);
             }
         );
     });

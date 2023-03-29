@@ -177,7 +177,7 @@ export const MainPolls = () => {
 
     const [countPollsOnPage] = useState(5);
     const [currentPage, setCurrentPage] = useState(1);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
     const topicId = useParams().topicId;
     //the count of polls
     const [countPolls, setCountPolls] = useState(0);
@@ -185,6 +185,8 @@ export const MainPolls = () => {
     const [currentPolls, setCurrentPolls] = useState([]);
 
     const [checkIsVoted, setCheckIsVoted] = useState(1);
+
+    const [countOfLoading, setCountOfLoading] = useState(0);
 
     const updateDataIfVoted = () => {
         setCheckIsVoted(prev => prev + 1);
@@ -196,23 +198,26 @@ export const MainPolls = () => {
             topicId: topicId,
         };
 
-        setIsLoading(true);
+        if(countOfLoading === 0){
+            setIsLoading(true);
+        }
         getCountPolls('/main/getCountPolls', params)
             .then(count => {
-                if (count) {
-                    getPolls('/main/getMainPolls/', params, currentPage, countPollsOnPage)
-                        .then((polls => {
-                            setCurrentPolls(polls);
-                        }));
-                }
+                getPolls('/main/getMainPolls/', params, currentPage, countPollsOnPage)
+                    .then((polls => {
+                        setCurrentPolls(polls);
+                        console.log(polls);
+                        setIsLoading(false);
+                    }));
                 setCountPolls(count);
+                setIsLoading(false);
             })
             .catch(err => {
                 console.error(err);
+                setIsLoading(false);
             });
 
-        setIsLoading(false);
-
+        setCountOfLoading(prev => prev + 1);
     }, [countPolls, currentPolls, currentPage, topicId, checkIsVoted]);
 
     useEffect(() => {

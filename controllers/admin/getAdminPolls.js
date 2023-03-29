@@ -1,6 +1,7 @@
 import {dataBase} from "../../database.js";
 import {formResult} from "../acccount/getMyPolls.js";
 
+// get the polls, which admin didn't check
 export const getAdminPolls = (req, res) => {
     const sqlRequest = `SELECT polls.poll_id, question, t.name, user_id, date_creation, nick_name
                         FROM polls
@@ -12,17 +13,17 @@ export const getAdminPolls = (req, res) => {
     const lastPollIndex = req.query.lastPollIndex;
     dataBase.query(sqlRequest, (err, data) => {
         if (err) {
-            res.status(500).json(err);
+            return res.status(500).json(err);
         }
         if (!data.length) {
-            res.status(501).json({message: 'Опитувань не знайдено!'});
+            return res.status(501).json({message: 'Опитувань не знайдено!'});
         }
         formResult(data).then(
             result => {
-                res.status(200).json(result.slice(firstPollIndex, lastPollIndex));
+                return res.status(200).json(result.slice(firstPollIndex, lastPollIndex));
             },
             err => {
-                res.status(503).json(err);
+                return res.status(503).json(err);
             }
         );
 
