@@ -37,6 +37,7 @@ class App extends React.Component {
                 <div className="content">
                     <Routes>
                         <Route path='/*' element={<Main/>}/>
+
                         {
                             (this.state.userRoles && this.state.userRoles.includes('ADMIN')) &&
                             <Route path='/admin/*' element={<AdminPanelMain/>}>

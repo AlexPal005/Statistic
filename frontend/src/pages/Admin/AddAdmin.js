@@ -7,6 +7,7 @@ export const AddAdmin = () => {
     const [isValid, setIsValid] = useState(false);
     const [res, setRes] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [isClickedInput, setIsClickedInput] = useState(false);
 
     const validateNickName = (e) => {
         if (!e.target.value.length) {
@@ -30,6 +31,7 @@ export const AddAdmin = () => {
     }, [errorNickName, nickName]);
 
     const handleChange = (e) => {
+        setIsClickedInput(true);
         setRes('');
         setNickName(e.target.value);
         validateNickName(e);
@@ -52,31 +54,29 @@ export const AddAdmin = () => {
     }
 
     return (
-        <>
-            <div className="basic-form">
-                <h1>Доступ до adminPanel</h1>
-                <form>
-                    {errorNickName && <p className="error">{errorNickName}</p>}
-                    <input required
-                           type="text"
-                           placeholder="Нікнейм"
-                           name="nickName"
-                           className={errorNickName ? ["input-color-blue", "error-input"].join(" ") : "input-color-blue"}
-                           onChange={handleChange}
-                    />
-                </form>
-                {isLoading ? <span>Loading...</span> :
-                    res && <p className="error">{res}</p>
-                }
-                <button
-                    disabled={!isValid}
-                    type="submit"
-                    className="button-form"
-                    onClick={handleSubmit}
-                >
-                    Додати
-                </button>
-            </div>
-        </>
+        <div className="basic-form">
+            <h1>Доступ до adminPanel</h1>
+            <form>
+                {(isClickedInput && errorNickName) && <p className="error">{errorNickName}</p>}
+                <input required
+                       type="text"
+                       placeholder="Нікнейм"
+                       name="nickName"
+                       className={(isClickedInput && errorNickName) ? ["input-color-blue", "error-input"].join(" ") : "input-color-blue"}
+                       onChange={handleChange}
+                />
+            </form>
+            {isLoading ? <span>Loading...</span> :
+                res && <p className="error">{res}</p>
+            }
+            <button
+                disabled={!isValid}
+                type="submit"
+                className="button-form"
+                onClick={handleSubmit}
+            >
+                Додати
+            </button>
+        </div>
     );
 };
