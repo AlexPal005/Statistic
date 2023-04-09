@@ -1,1 +1,48 @@
 @import "../../../components/modulesScss/variables";
+
+.intro{
+  @include place-center;
+  justify-content: center;
+  flex-direction: column;
+}
+.intro__wrap{
+  overflow: hidden;
+}
+.intro__list-text{
+  @include size(1000px, 100px);
+  position: relative;
+  animation: slide 6s cubic-bezier(0.68, -0.55, 0.27, 1.55) infinite ;
+}
+.intro__line-text{
+  font-size: 50px;
+  color: $text-answer;
+  font-weight: bold;
+  list-style-type: none;
+  position: absolute;
+  top: 200%;
+  left: 50%;
+  transform: translate(-50%);
+}
+.intro__line-text:first-child{
+  top: 100%;
+}
+.intro__line-text:last-child{
+  top: 300%;
+}
+@keyframes slide {
+  0%{
+    transform: translateY(0);
+  }
+  15%,30%{
+    transform: translateY(-100%);
+  }
+  45%,60%{
+    transform: translateY(-200%);
+  }
+  75%,90%{
+    transform: translateY(-300%);
+  }
+  100%{
+    transform: translateY(-400%);
+  }
+}

@@ -242,7 +242,7 @@ export const MainPolls = () => {
         }
     };
     return (
-        <>
+        <div className='content-my-polls'>
             {isLoading ? <Preloader/> :
 
                 !countPolls ? <div className="error">Нічого не знайдено!</div> :
@@ -266,6 +266,6 @@ export const MainPolls = () => {
                     </>
 
             }
-        </>
+        </div>
     );
 };

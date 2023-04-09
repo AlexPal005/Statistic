@@ -1,12 +1,16 @@
 import './Introducing.scss';
-import intro from '../../../media/videoIntro.webm';
 
 export const Introducing = () => {
+    const text = ['Statistic', 'Дізнайся більше', 'Запитай в інших'];
     return (
-        <>
-            <video style={{width: '200%',  height: '300px'}} autoPlay={true} muted={true} loop = {true}>
-                <source src={intro} type="video/webm"/>
-            </video>
-        </>
+        <div className='intro'>
+            <div className="intro__wrap">
+                <ul className='intro__list-text'>
+                    {text.map((text, index) => {
+                        return (<li className='intro__line-text' key={index}>{text}</li>);
+                    })}
+                </ul>
+            </div>
+        </div>
     );
 };

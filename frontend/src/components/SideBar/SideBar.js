@@ -38,7 +38,7 @@ export const SideBar = () => {
             {topics && topics.map((topic, index) => {
                 return (
                     <NavLink key={topic.id}
-                             to={`/polls/${topic.id}`}
+                             to={`polls/${topic.id}`}
                              className="side-bar__links-menu-item side-bar__links-menu-item-main"
                     >
                         {icons[index]}
