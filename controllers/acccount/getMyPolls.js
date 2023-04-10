@@ -100,7 +100,7 @@ function getUsersVote(pollId) {
 }
 
 // add to the poll users who have voted
-function addUsersIdVoteToPolls(polls) {
+export function addUsersIdVoteToPolls(polls) {
     return new Promise((resolve, reject) => {
         polls.forEach((poll, index) => {
             getUsersVote(poll.poll_id)
@@ -127,6 +127,22 @@ export function formResult(polls) {
                     }
                 });
         });
+    });
+}
+
+export function formResultWithUsers(polls) {
+    return new Promise((resolve, reject) => {
+        formResult(polls).then(
+            result => {
+                addUsersIdVoteToPolls(result)
+                    .then(polls => {
+                        resolve(polls);
+                    });
+            },
+            err => {
+                throw new Error(err);
+            }
+        );
     });
 }
 
@@ -164,7 +180,9 @@ export const getMainPolls = (req, res) => {
     const sqlRequest = `SELECT polls.poll_id, question, t.name, user_id, date_creation
                         FROM polls
                                  INNER JOIN topics t on polls.topic_id = t.id
-                        WHERE topic_id = (?) AND polls.is_checked = TRUE AND polls.is_allowed = TRUE;`;
+                        WHERE topic_id = (?)
+                          AND polls.is_checked = TRUE
+                          AND polls.is_allowed = TRUE;`;
     const topicId = req.query.topicId;
 
     dataBase.query(sqlRequest, topicId, (err, data) => {
@@ -174,17 +192,13 @@ export const getMainPolls = (req, res) => {
         if (!data.length) {
             return res.status(400).json('Нічого не знайдено!');
         }
-        formResult(data).then(
-            result => {
-                addUsersIdVoteToPolls(result)
-                    .then(polls => {
-                        return res.status(200).json(cutPolls(req.query.firstPollIndex, req.query.lastPollIndex, polls));
-                    });
-            },
-            err => {
+        formResultWithUsers(data)
+            .then(polls => {
+                return res.status(200).json(cutPolls(req.query.firstPollIndex, req.query.lastPollIndex, polls));
+            })
+            .catch(err => {
                 return res.status(500).json(err);
-            }
-        );
+            });
     });
 };
 

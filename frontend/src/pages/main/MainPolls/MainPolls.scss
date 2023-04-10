@@ -31,3 +31,17 @@
   width: 100%;
   margin-left: 5px;
 }
+.card__arrow-link{
+  background-color: red;
+}
+.card__arrow{
+  position: absolute;
+  right: 20px;
+  @include size(25px, 25px);
+  cursor: pointer;
+  color: $green;
+  border-radius: 5px;
+}
+.card__arrow:hover{
+  background-color: $grey-disabled;
+}

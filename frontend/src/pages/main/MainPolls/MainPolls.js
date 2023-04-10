@@ -1,5 +1,5 @@
 import {Pagination} from "../../../components/Pagination/Pagination";
-import {useNavigate, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import {useCallback, useContext, useEffect, useRef, useState} from "react";
 import {Preloader} from "../../../components/Preloader/Preloader";
 import "./MainPolls.scss";
@@ -8,6 +8,7 @@ import {getCountPolls} from "../../getCountPolls";
 import {getPolls} from "../../getPolls";
 import {AuthContext} from "../../../context/authContext";
 import axios from "axios";
+import {AiOutlineArrowRight} from "react-icons/ai";
 
 const VoteField = ({
                        answer,
@@ -137,6 +138,10 @@ const Card = ({poll, updateDataIfVoted}) => {
 
     return (
         <div className="card">
+            <Link to={`/pollPage/${poll.poll_id}`}>
+                <AiOutlineArrowRight className='card__arrow'/>
+            </Link>
+
             <span className="grey-data-card">
                 Створено {new Date(poll.date_creation).toLocaleDateString()} {poll.nick_name}
             </span>
@@ -198,7 +203,7 @@ export const MainPolls = () => {
             topicId: topicId,
         };
 
-        if(countOfLoading === 0){
+        if (countOfLoading === 0) {
             setIsLoading(true);
         }
         getCountPolls('/main/getCountPolls', params)
@@ -206,7 +211,6 @@ export const MainPolls = () => {
                 getPolls('/main/getMainPolls/', params, currentPage, countPollsOnPage)
                     .then((polls => {
                         setCurrentPolls(polls);
-                        console.log(polls);
                         setIsLoading(false);
                     }));
                 setCountPolls(count);

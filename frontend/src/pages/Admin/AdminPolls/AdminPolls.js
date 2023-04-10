@@ -28,7 +28,6 @@ export const AdminPolls = () => {
                     getPolls('/admin/getAdminPolls', [], currentPage, countPollsOnPage)
                         .then((polls => {
                             setCurrentPolls(polls);
-                            console.log(polls);
                         }));
                 }
                 setCountPolls(count);

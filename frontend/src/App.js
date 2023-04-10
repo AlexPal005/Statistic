@@ -65,7 +65,7 @@ class App extends React.Component {
                             path="/confirmation"
                             element={this.context.currentUser ? <Navigate replace to="/"/> : <Confirmation/>}
                         />
-                        <Route path="*" element={<Navigate to="/" replace/>}/>
+                        <Route path="*" element={<Navigate replace to="/"/>}/>
                     </Routes>
 
                 </div>
