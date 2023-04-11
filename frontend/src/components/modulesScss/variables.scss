@@ -35,3 +35,24 @@ $green-hover: #016e01;
   transition: ease-out 0.3s;
   border-radius: 10px;
 }
+
+@mixin button-disabled {
+  background-color: $grey-disabled;
+  cursor: auto;
+}
+
+.button-green-basic {
+  @include button-basic;
+  background-color: $green;
+  color: $white;
+  border: none;
+}
+
+.button-green-basic:hover {
+  background-color: $green-hover;
+  cursor: pointer;
+}
+
+.button-green-basic:disabled {
+  @include button-disabled;
+}

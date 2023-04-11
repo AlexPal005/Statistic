@@ -52,24 +52,10 @@
 .basic-form label {
   font-size: 16px;
 }
-
 .button-form {
+  @extend .button-green-basic;
   @include size(150px, 40px);
-  @include button-basic;
   margin-top: 25px;
-  background-color: $green;
-  color: $white;
-  border: none;
-}
-
-.button-form:hover {
-  background-color: $green-hover;
-  cursor: pointer;
-}
-
-.button-form:disabled {
-  background-color: $grey-disabled;
-  cursor: auto;
 }
 
 @media screen and (max-width: 768px) {

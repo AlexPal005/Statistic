@@ -21,17 +21,22 @@
 .textarea-basic{
   @extend .input-color-blue;
   border-radius: 5px;
-  padding: 15px;
   transition: none;
-  max-width: 500px;
+}
+.textarea-new-poll{
+  padding: 15px;
+  max-width: 300px;
+  min-width: 300px;
   max-height: 200px;
 }
 .textarea-question{
   @extend .textarea-basic;
+  @extend .textarea-new-poll;
   @include size(300px, 90px);
 }
 .textarea-answer{
   @extend .textarea-basic;
+  @extend .textarea-new-poll;
   @include size(300px, 70px);
 }
 .answers{

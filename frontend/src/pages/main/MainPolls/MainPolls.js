@@ -10,17 +10,17 @@ import {AuthContext} from "../../../context/authContext";
 import axios from "axios";
 import {AiOutlineArrowRight} from "react-icons/ai";
 
-const VoteField = ({
-                       answer,
-                       pollId,
-                       id,
-                       refsRadio,
-                       vote,
-                       totalCountVotes,
-                       indexForRefs,
-                       isUserVotedBefore,
-                       countVotes
-                   }) => {
+export const VoteField = ({
+                              answer,
+                              pollId,
+                              id,
+                              refsRadio,
+                              vote,
+                              totalCountVotes,
+                              indexForRefs,
+                              isUserVotedBefore,
+                              countVotes
+                          }) => {
     const [votePercentage, setVotePercentage] = useState(0);
     //rounding of percentages
     const [votePercentageRes, setVotePercentageRes] = useState(0);
@@ -67,7 +67,7 @@ const VoteField = ({
     );
 };
 
-const Card = ({poll, updateDataIfVoted}) => {
+export const Card = ({poll, updateDataIfVoted, isMainPage}) => {
     const navigate = useNavigate();
     const currentUser = useContext(AuthContext);
     const [answers, setAnswers] = useState(poll.answers);
@@ -138,9 +138,13 @@ const Card = ({poll, updateDataIfVoted}) => {
 
     return (
         <div className="card">
-            <Link to={`/pollPage/${poll.poll_id}`}>
-                <AiOutlineArrowRight className='card__arrow'/>
-            </Link>
+            {
+                isMainPage &&
+                <Link to={`/pollPage/${poll.poll_id}`}>
+                    <AiOutlineArrowRight className='card__arrow'/>
+                </Link>
+            }
+
 
             <span className="grey-data-card">
                 Створено {new Date(poll.date_creation).toLocaleDateString()} {poll.nick_name}
@@ -257,6 +261,7 @@ export const MainPolls = () => {
                                     key={poll.poll_id}
                                     poll={poll}
                                     updateDataIfVoted={updateDataIfVoted}
+                                    isMainPage={true}
                                 />);
                         })}
                         <Pagination

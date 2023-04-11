@@ -1,0 +1,29 @@
+@import './../../components/modulesScss/variables';
+@import './../account/NewPoll/NewPoll';
+.comments-block{
+  width: 50%;
+  border-radius: 5px;
+}
+.comments-block__main-text{
+  font-size: 21px;
+  margin-bottom: 15px;
+}
+.comments-block__new-comment-text{
+  display: block;
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+.textarea-add-comment{
+  @extend .textarea-basic;
+  @include size(100%, 70px);
+  max-width: 100%;
+  min-width: 100%;
+  max-height: 200px;
+  min-height: 70px;
+  padding: 10px;
+  margin-bottom: 5px;
+}
+.button-add-comment{
+  @extend .button-green-basic;
+  @include size(100px, 35px);
+}
