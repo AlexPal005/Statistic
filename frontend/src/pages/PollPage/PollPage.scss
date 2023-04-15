@@ -3,10 +3,17 @@
 .comments-block{
   width: 50%;
   border-radius: 5px;
+  padding-bottom: 30px;
 }
 .comments-block__main-text{
   font-size: 21px;
-  margin-bottom: 15px;
+  display: flex;
+  margin-bottom: 20px;
+}
+.comments-block__main-text > span {
+  font-weight: bold;
+  color: $red-error;
+  margin-left: 7px;
 }
 .comments-block__new-comment-text{
   display: block;

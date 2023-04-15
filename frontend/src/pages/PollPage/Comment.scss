@@ -1,0 +1,35 @@
+@import "./../../components/modulesScss/variables";
+.comment{
+  margin-bottom: 15px;
+  display: flex;
+}
+.comment__icon-block{
+  min-width: 30px;
+}
+
+.comment__icon{
+  color: $dark-grey;
+  @include size(25px, 25px);
+}
+.comment__nick-name{
+  font-size: 16px;
+  font-weight: bold;
+  color: $dark-grey;
+  display: block;
+  margin-bottom: 3px;
+}
+.comment__comment-text{
+  font-size: 15px;
+}
+.comment__response-text{
+  font-size: 13px;
+  margin-top: 15px;
+  color: $green;
+}
+.comment__content{
+  min-width: calc(100% - 30px);
+}
+.comment__response-text:hover{
+  text-decoration: underline;
+  cursor: pointer;
+}
