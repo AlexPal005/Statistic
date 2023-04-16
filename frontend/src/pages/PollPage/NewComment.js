@@ -11,7 +11,6 @@ export const NewComment = ({parentId, hideNewComment}) => {
     const [comment, setComment] = useState('');
     const commentTextRef = useRef(null);
 
-
     const handleChangeComment = (e) => {
         if (e.target.value.length) {
             setComment(e.target.value);

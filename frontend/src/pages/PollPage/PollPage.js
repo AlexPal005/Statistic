@@ -8,39 +8,31 @@ import {Comment} from "./Comment";
 import {NewComment} from "./NewComment";
 
 export const PollPageContext = createContext(null);
+
+function Comments({comments}) {
+
+    return (
+        comments.map(comment => {
+            return <div key={comment.data.comment_id} style = {{paddingLeft: '5%'}}>
+                <Comment
+                    commentData={comment.data}
+                />
+                <Comments comments={comment.next}/>
+            </div>
+
+        })
+    );
+
+}
+
+
 export const PollPage = () => {
     const pollId = useParams().pollId;
     const [poll, setPoll] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [comments, setComments] = useState([]);
     const [updateCommentsValue, setUpdateCommentsValue] = useState(1);
-    const [commentsList, setCommentsList] = useState([]);
 
-    const createListFirstComments = () => {
-        let newCommentsList = [];
-        comments.map((comment, index) => {
-            if (comment.parent_id === -1) {
-                newCommentsList.push(
-                    {
-                        data: comment,
-                        next: []
-                    }
-                );
-            }
-        })
-        return newCommentsList;
-    }
-    const createCommentsList = (nextComments) => {
-        for (let i = 0; i < nextComments.length; i++) {
-            for (let j = 0; j < comments.length; j++) {
-                if(comments[j].parent_id === nextComments[i].data.comment_id){
-                    nextComments[i].next.push(comments[j]);
-                }
-                createCommentsList(nextComments[i].next);
-            }
-        }
-        console.log(nextComments);
-    };
 
     const updateComments = () => {
         setUpdateCommentsValue(prev => prev + 1);
@@ -63,8 +55,7 @@ export const PollPage = () => {
         axios.get('/main/comment/getComments', {params: {pollId: pollId}})
             .then(response => {
                 setComments(response.data);
-                createCommentsList(createListFirstComments());
-                //console.log(response.data);
+                console.log(response.data);
             })
             .catch(err => {
                 console.error(err);
@@ -92,18 +83,7 @@ export const PollPage = () => {
                 }
                 <div className='comments-block'>
                     <span className='comments-block__main-text'>Коментарі <span>{comments.length}</span></span>
-                    {comments.map(commentData => {
-                        if (commentData.parent_id === -1) {
-                            return (
-                                <div key={commentData.comment_id}>
-                                    <Comment
-                                        commentData={commentData}
-                                        comments={comments}
-                                    />
-                                </div>
-                            );
-                        }
-                    })}
+                    <Comments comments={comments}/>
                     <NewComment parentId={-1}/>
                 </div>
             </div>

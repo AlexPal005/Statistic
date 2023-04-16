@@ -9,11 +9,6 @@ export const addComment = (req, res) => {
     let sqlRequest = `INSERT INTO comments (poll_id, comment, parent_id, user_id)
                       VALUES (${pollId}, '${comment}', ${parentId}, ${userId});`;
 
-    // if comment is a response to other comment
-    if (!parentId) {
-        sqlRequest = `INSERT INTO comments (poll_id, comment, user_id)
-                      VALUES (${pollId}, '${comment}', ${userId});`;
-    }
 
     dataBase.query(sqlRequest, (err, data) => {
         if (err) {
@@ -23,6 +18,41 @@ export const addComment = (req, res) => {
     });
 };
 
+const createListFirstComments = (comments) => {
+    const newListComments = [];
+    comments.forEach((comment) => {
+        if (comment.parent_id === -1) {
+            newListComments.push(
+                {
+                    data: comment,
+                    next: []
+                }
+            );
+        }
+    });
+
+    return newListComments;
+}
+// create a list each element has the next reference to child comments
+const createCommentsList = (nextComments, comments) => {
+    nextComments.forEach(nextComment => {
+        comments.forEach(comment => {
+            if (nextComment.data.comment_id === comment.parent_id) {
+                if (!nextComment?.next) {
+                    nextComment.next = [];
+                }
+                nextComment.next.push({data: comment, next: []});
+                if (!comments.length) {
+                    return nextComments;
+                }
+            }
+        })
+        if (nextComment.next.length) {
+            createCommentsList(nextComment.next, comments);
+        }
+    })
+    return nextComments;
+};
 export const getCommentsByPollId = (req, res) => {
     const pollId = req.query.pollId;
     let sqlRequest = `SELECT comment_id, comment, user_id, nick_name, parent_id
@@ -37,6 +67,7 @@ export const getCommentsByPollId = (req, res) => {
         if (!data.length) {
             return res.status(501).json({message: 'Коментарів не знайдено!'})
         }
-        return res.status(200).json(data);
+        const newCommentsList = createListFirstComments(data);
+        return res.status(200).json(createCommentsList(newCommentsList, data));
     });
 };
