@@ -6,12 +6,14 @@ export const AuthContext = createContext(null);
 export const AuthContextProvider = ({children}) => {
     const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem('user')) || null);
     const login = async (inputs) => {
-        axios.post("/auth/login", inputs)
-            .then(response => {
-                const jwtToken = response.data;
-                const decodeUser = jwtDecode(jwtToken);
-                setCurrentUser({...decodeUser, jwtToken: jwtToken});
-            })
+        try {
+            const res = await axios.post("/auth/login", inputs);
+            const jwtToken = res.data;
+            const decodeUser = jwtDecode(jwtToken);
+            setCurrentUser({...decodeUser, jwtToken: jwtToken});
+        } catch (err) {
+            throw err;
+        }
     };
 
     const logOut = async () => {

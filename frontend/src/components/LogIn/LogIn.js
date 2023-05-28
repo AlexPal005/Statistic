@@ -66,9 +66,8 @@ const LogIn = () => {
 
         try {
             await login(inputs);
-            navigate("/account/my-polls");
-        } catch (e) {
-            setRes(e.response.data);
+        } catch (err) {
+            setRes(err.response.data);
         }
     };
     return (

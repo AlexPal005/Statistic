@@ -1,4 +1,4 @@
-@import "./src/components/modulesScss/variables";
+@import "../../../modulesScss/variables";
 @import "./src/components/FormRegistration/FormRegistration";
 .basic-select{
   @extend .input-color-blue;

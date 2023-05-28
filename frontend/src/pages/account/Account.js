@@ -7,6 +7,8 @@ import {IoMdReturnRight} from "react-icons/io";
 import {GoChecklist} from "react-icons/go";
 import {NavLink, Route, Routes} from "react-router-dom";
 import {MyPolls} from "./MyPolls/MyPolls";
+import {ChangePassword} from "./ChangePassword";
+import {VotedPolls} from "../VotedPolls";
 
 export const Account = () => {
 
@@ -29,25 +31,25 @@ export const Account = () => {
                     <HiOutlineViewGridAdd className="icon-menu"/>
                     <span>Додати голосування</span>
                 </NavLink>
-                <div className="side-bar__links-menu-item side-bar-account-item side-bar-margin">
+                <NavLink
+                    className="side-bar__links-menu-item side-bar-account-item side-bar-margin"
+                    to="/user/account/changePassword">
                     <MdOutlinePassword className="icon-menu"/>
                     <span>Змінити пароль</span>
-                </div>
-                <div className="side-bar__links-menu-item side-bar-account-item side-bar-margin">
+                </NavLink>
+                <NavLink
+                    className="side-bar__links-menu-item side-bar-account-item side-bar-margin"
+                    to="/user/account/votedPolls"
+                >
                     <IoMdReturnRight className="icon-menu"/>
                     <span>Мої голоси</span>
-                </div>
-                <NavLink
-                    to="/user/account"
-                    className="side-bar__links-menu-item side-bar-account-item side-bar-margin"
-                    exact="true"
-                >
-                    <span>Повідомлення</span>
                 </NavLink>
             </div>
             <Routes>
                 <Route path="newPoll" element={<NewPoll/>}/>
                 <Route path="my-polls" element={<MyPolls/>}/>
+                <Route path="changePassword" element={<ChangePassword/>}/>
+                <Route path="votedPolls" element={<VotedPolls/>}/>
             </Routes>
         </div>
 

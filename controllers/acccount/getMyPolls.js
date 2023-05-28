@@ -79,6 +79,9 @@ function getNewPollIncludesAnswersAndCount(poll) {
                                 resolve({...poll, totalCountVotes: countVotes[0].countTotalVotes})
                             });
                     });
+            })
+            .catch(e => {
+                console.log("Помилка в отриманні відповідей!")
             });
     });
 }

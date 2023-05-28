@@ -1,7 +1,8 @@
-@import "./../../components/modulesScss/variables";
+@import "../../modulesScss/variables";
 .comment{
   margin-bottom: 15px;
   display: flex;
+  position: relative;
 }
 .comment__icon-block{
   min-width: 30px;
@@ -23,13 +24,34 @@
 }
 .comment__response-text{
   font-size: 13px;
-  margin-top: 15px;
+  margin-top: 10px;
   color: $green;
 }
 .comment__content{
   min-width: calc(100% - 30px);
+  background-color: #e7e6e6;
+  border-radius: 20px;
+  padding: 15px;
 }
 .comment__response-text:hover{
   text-decoration: underline;
   cursor: pointer;
+}
+.comment__dots{
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+}
+.functional-window{
+  border-radius: 15px;
+  position: absolute;
+  right: -110px;
+  top: 0;
+  padding: 5px;
+  text-align: center;
+  transition: 1s;
+  border: 1px solid $grey;
 }
