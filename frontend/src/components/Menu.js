@@ -9,7 +9,7 @@ const Menu = (props)=>{
             <Link to = "/">
                 <p>Додому</p>
             </Link>
-            <Link to = "/">
+            <Link to = "/AboutUs">
                 <p>Про нас</p>
             </Link>
             <Link to = "/">

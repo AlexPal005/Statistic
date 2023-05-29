@@ -26,6 +26,7 @@ export const AdminPanelMain = () => {
                 <Routes>
                     <Route path="polls" element={<AdminPolls/>}/>
                     <Route path="addAdmin" element={<AddAdmin/>}/>
+                    <Route path="" element={<AdminPolls/>}/>
                 </Routes>
             </div>
         </div>

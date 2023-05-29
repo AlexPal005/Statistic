@@ -37,21 +37,3 @@
   text-decoration: underline;
   cursor: pointer;
 }
-.comment__dots{
-  position: absolute;
-  right: 15px;
-  top: 15px;
-  width: 20px;
-  height: 20px;
-  cursor: pointer;
-}
-.functional-window{
-  border-radius: 15px;
-  position: absolute;
-  right: -110px;
-  top: 0;
-  padding: 5px;
-  text-align: center;
-  transition: 1s;
-  border: 1px solid $grey;
-}

@@ -168,14 +168,16 @@ export const MyPolls = () => {
                     }
                 </>
             }
-            <Pagination
-                countPolls={countPolls}
-                countPollsOnPage={countPollsOnPage}
-                paginate={paginate}
-                next={next}
-                prev={prev}
-                currentPage={currentPage}
-            />
+            {countPolls > 5 &&
+                <Pagination
+                    countPolls={countPolls}
+                    countPollsOnPage={countPollsOnPage}
+                    paginate={paginate}
+                    next={next}
+                    prev={prev}
+                    currentPage={currentPage}
+                />
+            }
             {isClickedDelete && <ConfirmationDeletePoll closeModal={closeModal} deletePoll={handleDeletePoll}/>}
         </div>
     );

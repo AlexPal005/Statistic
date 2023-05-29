@@ -8,7 +8,7 @@ import {GoChecklist} from "react-icons/go";
 import {NavLink, Route, Routes} from "react-router-dom";
 import {MyPolls} from "./MyPolls/MyPolls";
 import {ChangePassword} from "./ChangePassword";
-import {VotedPolls} from "../VotedPolls";
+import {VotedPolls} from "./VotedPolls";
 
 export const Account = () => {
 

@@ -10,6 +10,7 @@ import {Confirmation} from "./components/Confirmation";
 import {Account} from "./pages/account/Account";
 import {AuthContext} from "./context/authContext";
 import {AdminPanelMain} from "./pages/Admin/AdminPanelMain";
+import {AboutUs} from "./pages/AboutUs";
 
 class App extends React.Component {
     static contextType = AuthContext;
@@ -64,6 +65,10 @@ class App extends React.Component {
                         <Route
                             path="/confirmation"
                             element={this.context.currentUser ? <Navigate replace to="/"/> : <Confirmation/>}
+                        />
+                        <Route
+                            path="/aboutUs"
+                            element={<AboutUs/>}
                         />
                         <Route path="*" element={<Navigate replace to="/"/>}/>
                     </Routes>
