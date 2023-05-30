@@ -32,6 +32,7 @@ export const PollPage = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [comments, setComments] = useState([]);
     const [updateCommentsValue, setUpdateCommentsValue] = useState(1);
+    const [checkIsVoted, setCheckIsVoted] = useState(1);
 
 
     const updateComments = () => {
@@ -68,7 +69,11 @@ export const PollPage = () => {
 
     useEffect(() => {
         getPoll();
-    }, []);
+    }, [checkIsVoted]);
+
+    const updateDataIfVoted = () => {
+        setCheckIsVoted(prev => prev + 1);
+    };
 
     return (
         <PollPageContext.Provider value={{updateComments, poll}}>
@@ -79,10 +84,11 @@ export const PollPage = () => {
                         key={poll.poll_id}
                         poll={poll}
                         isMainPage={false}
+                        updateDataIfVoted={updateDataIfVoted}
                     />
                 }
                 <div className='comments-block'>
-                    <span className='comments-block__main-text'>Коментарі <span>{comments.length}</span></span>
+                    <span className='comments-block__main-text'>Коментарі</span>
                     <Comments comments={comments}/>
                     <NewComment parentId={-1}/>
                 </div>

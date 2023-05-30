@@ -19,7 +19,7 @@ export const register = (req, res) => {
             return res.json(err);
         }
 
-        const sqlAddRole = `INSERT INTO roles_of_users
+        const sqlAddRole = `INSERT INTO roles_of_users (role_id, user_id)
                             VALUES (2, ${data.insertId});`
         dataBase.query(sqlAddRole, (err, data) => {
             if (err) {
@@ -81,13 +81,13 @@ function getRolesUser(userId) {
                                  INNER JOIN roles_of_users rou on roles.role_id = rou.role_id
                         WHERE rou.user_id = ${userId};`;
 
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
         dataBase.query(sqlRequest, (err, data) => {
             if (err) {
-                throw new Error(JSON.stringify(err));
+                reject(JSON.stringify(err));
             }
             if (!data.length) {
-                throw new Error('Помилка! Ролей не знайдено!');
+                reject('Помилка! Ролей не знайдено!');
             }
             resolve(data);
         });
@@ -126,7 +126,7 @@ export const login = (req, res) => {
                     dataToSend.roles.push(role.role_name);
                 });
 
-                const token = jwt.sign( dataToSend, "jwtkey");
+                const token = jwt.sign(dataToSend, "jwtkey");
                 res.cookie('accessToken', token, {
                     httpOnly: true
                 }).status(200).json(token);
