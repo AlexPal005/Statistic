@@ -57,6 +57,9 @@
   @include size(150px, 40px);
   margin-top: 25px;
 }
+.button-register{
+  margin-bottom: 30px;
+}
 
 @media screen and (max-width: 768px) {
   .basic-form input:not(input[type="checkbox"]) {

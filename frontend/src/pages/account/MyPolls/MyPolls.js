@@ -91,14 +91,13 @@ export const MyPolls = () => {
         }
         getCountPolls("/polls/getCountPolls", params)
             .then(count => {
-                setCountPolls(count);
-            })
-            .then(() => {
                 getPolls('/polls/getMyPolls/', params, currentPage, countPollsOnPage)
                     .then((polls => {
                         setCurrentPolls(polls);
                         setIsLoading(false);
-                    }))
+                    }));
+                setCountPolls(count);
+                setIsLoading(false);
             })
             .catch(err => {
                 console.error(err);
@@ -153,32 +152,34 @@ export const MyPolls = () => {
     return (
         <div className="content-my-polls">
             {isLoading ? <Preloader/> :
-                <>
-                    {
-                        currentPolls.map((poll) => {
-                            return (
-                                <Card
-                                    key={poll.poll_id}
-                                    pollId={poll.poll_id}
-                                    poll={poll}
-                                    handleShowConfirmDelete={handleShowConfirmDelete}
-                                />
-                            );
-                        })
-                    }
-                </>
+                !countPolls ? <div className="error">Нічого не знайдено!</div> :
+                    <>
+                        {
+                            currentPolls.map((poll) => {
+                                return (
+                                    <Card
+                                        key={poll.poll_id}
+                                        pollId={poll.poll_id}
+                                        poll={poll}
+                                        handleShowConfirmDelete={handleShowConfirmDelete}
+                                    />
+                                );
+                            })
+                        }
+                        {countPolls > 5 &&
+                            <Pagination
+                                countPolls={countPolls}
+                                countPollsOnPage={countPollsOnPage}
+                                paginate={paginate}
+                                next={next}
+                                prev={prev}
+                                currentPage={currentPage}
+                            />
+                        }
+                        {isClickedDelete &&
+                            <ConfirmationDeletePoll closeModal={closeModal} deletePoll={handleDeletePoll}/>}
+                    </>
             }
-            {countPolls > 5 &&
-                <Pagination
-                    countPolls={countPolls}
-                    countPollsOnPage={countPollsOnPage}
-                    paginate={paginate}
-                    next={next}
-                    prev={prev}
-                    currentPage={currentPage}
-                />
-            }
-            {isClickedDelete && <ConfirmationDeletePoll closeModal={closeModal} deletePoll={handleDeletePoll}/>}
         </div>
     );
 }

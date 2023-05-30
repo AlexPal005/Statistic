@@ -194,7 +194,7 @@ const FormRegistration = () => {
                 />
             </form>
             {res && <p className="error">{res}</p>}
-            <button disabled={!isValid} type="submit" onClick={handleSubmit} className="button-form">Надіслати</button>
+            <button disabled={!isValid} type="submit" onClick={handleSubmit} className="button-form button-register">Надіслати</button>
         </div>
     );
 };

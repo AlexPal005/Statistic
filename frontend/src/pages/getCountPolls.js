@@ -5,6 +5,9 @@ export function getCountPolls(url, params) {
         axios.get(url, {params: {...params}})
             .then(response => {
                 resolve(response.data[0].countPolls);
+            })
+            .catch((err) => {
+                reject(err);
             });
     });
 }

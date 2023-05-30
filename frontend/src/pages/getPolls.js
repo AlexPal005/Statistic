@@ -16,6 +16,9 @@ export function getPolls(url, params, currentPage, countPollsOnPage) {
             })
             .then(response => {
                 resolve(response.data)
+            })
+            .catch(err => {
+                reject(err);
             });
     });
 }

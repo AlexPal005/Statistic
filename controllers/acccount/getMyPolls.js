@@ -10,10 +10,10 @@ function getAnswersBD(pollId) {
     return new Promise((resolve, reject) => {
         dataBase.query(sqlRequest, pollId, (err, data) => {
             if (err) {
-                throw new Error(JSON.stringify(err));
+                reject(JSON.stringify(err));
             }
             if (!data.length) {
-                throw new Error('Нічого не знайдено!');
+                reject('Нічого не знайдено!');
             }
             resolve(data);
         });
@@ -81,7 +81,7 @@ function getNewPollIncludesAnswersAndCount(poll) {
                     });
             })
             .catch(e => {
-                console.log("Помилка в отриманні відповідей!")
+                reject("Помилка в отриманні відповідей!")
             });
     });
 }
@@ -128,6 +128,9 @@ export function formResult(polls) {
                     if (polls.length - 1 === index) {
                         resolve(resultPolls);
                     }
+                })
+                .catch(e => {
+                    reject(e);
                 });
         });
     });
