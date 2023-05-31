@@ -12,9 +12,6 @@ const Menu = (props)=>{
             <Link to = "/AboutUs">
                 <p>Про нас</p>
             </Link>
-            <Link to = "/">
-                <p>Контакти</p>
-            </Link>
         </div>
     );
 };
